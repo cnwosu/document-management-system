@@ -1,0 +1,28 @@
+{
+  "name": "document-management-system",
+  "version": "1.0.0",
+  "description": "a document management system",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-vnwosu/document-management-system.git"
+  },
+  "keywords": [
+    "document",
+    "management",
+    "system",
+    "checkpoint2"
+  ],
+  "author": "chiamaka nwosu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andela-vnwosu/document-management-system/issues"
+  },
+  "homepage": "https://github.com/andela-vnwosu/document-management-system#readme",
+  "dependencies": {
+    "sequelize": "^3.30.2"
+  }
+}
