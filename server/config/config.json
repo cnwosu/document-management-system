@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "",
+    "password": "",
+    "database": "document_ms",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "",
+    "password": "",
+    "database": "document_ms_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "",
+    "password": "",
+    "database": "document_ms_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
