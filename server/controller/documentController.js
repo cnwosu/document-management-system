@@ -1,9 +1,15 @@
+import db from '../models/index';
+
+
+const User = db.User;
+
+
 class documentController {
   
-  static documentInstance(req, res) {
+  static newDocument(req, res) {
     
   }
-  static matchingInstances(req, res) {
+  static getDocuments(req, res) {
     
   }
   static findDocument(req, res) {
@@ -15,8 +21,11 @@ class documentController {
   static deleteDocument(req, res) {
     
   }
-  static documents(req, res) {
+  static userDocuments(req, res) {
     
+  }
+  static searchDocument(req, res){
+
   }
 }
 

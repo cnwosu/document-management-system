@@ -19,7 +19,9 @@ router.put('/users/:id', usersController.updateUser);
 
 router.delete('/users/:id', usersController.deleteUser);
 
-router.post('/documents/', documentController.documentInstance);
+router.get('/users/q/:username', documentController.searchUser);
+
+router.post('/documents/', documentController.newDocument);
 
 router.get('/documents/', documentController.matchingInstances);
 
@@ -29,8 +31,8 @@ router.put('/documents/:id', documentController.updateDocument);
 
 router.delete('/documents/:id', documentController.deleteDocument);
 
-router.get('/documents/:id/documents', documentController.documents);
+router.get('/documents/:id/documents', documentController.userDocuments);
 
-
+router.get('/documents/q/:doctittle'), documentController.searchDocument);
 
 export default router;
