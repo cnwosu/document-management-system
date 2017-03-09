@@ -1,7 +1,10 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Roles = sequelize.define('Roles', {
-    tittle: DataTypes.STRING
+    tittle: {
+      type: DataTypes.STRING,
+      validate: { notEmpty: true }
+    }
   }, {
     classMethods: {
       associate: function(models) {

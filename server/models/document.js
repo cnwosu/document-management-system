@@ -1,10 +1,23 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Document = sequelize.define('Document', {
-    userId: DataTypes.INTEGER,
-    tittle: DataTypes.STRING,
-    content: DataTypes.STRING,
-    access: DataTypes.STRING
+    userId: {
+      type: DataTypes.INTEGER,
+      validate: { notEmpty: true }
+    },
+    title: {
+      type: DataTypes.STRING,
+      validate: { notEmpty: true }
+    },
+    content: {
+      type: DataTypes.STRING,
+      validate: { notEmpty: true }
+    },
+      
+    access: {
+      type: DataTypes.STRING,
+      isIn: ['READ', 'WRITE']
+    }
   }, {
     classMethods: {
       associate: function(models) {
