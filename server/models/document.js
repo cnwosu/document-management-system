@@ -1,7 +1,11 @@
-'use strict';
-module.exports = function(sequelize, DataTypes) {
-  var Document = sequelize.define('Document', {
+
+module.exports = (sequelize, DataTypes) => {
+  let Document = sequelize.define('Document', {
     userId: {
+      type: DataTypes.INTEGER,
+      validate: { notEmpty: true }
+    },
+    ownerRoleId: {
       type: DataTypes.INTEGER,
       validate: { notEmpty: true }
     },
@@ -10,17 +14,17 @@ module.exports = function(sequelize, DataTypes) {
       validate: { notEmpty: true }
     },
     content: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       validate: { notEmpty: true }
     },
-      
+
     access: {
-      type: DataTypes.STRING,
-      isIn: ['READ', 'WRITE']
+      type: DataTypes.ENUM('public', 'private', 'role'),
+      allowNull: false
     }
   }, {
     classMethods: {
-      associate: function(models) {
+      associate(models) {
         // associations can be defined here
       }
     }

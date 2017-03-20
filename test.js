@@ -1,9 +1,9 @@
-var User = require('./server/models/index.js').User;
+let User = require('./server/models/index.js').User;
 
-var newUser = {
-  fullname: "Ngozi Achoi",
-  username: "hglox",
-  password_digest: "funnyp",
+let newUser = {
+  fullname: 'Ngozi Achoi',
+  username: 'hglox',
+  password_digest: 'funnyp',
   email: 'going@go.com',
   roleId: 1
 };
@@ -16,16 +16,16 @@ User.create(newUser).then((user) => {
   console.log(user);
 });
 
-var Document = require('./server/models/index.js').Document;
+let Document = require('./server/models/index.js').Document;
 
-var newDocument = {
-  userId: "001",
-  title: "The pelican brief",
-  content: "A book by John Grisham, a really trilling read.",
-  access: "READ"
+let newDocument = {
+  userId: '001',
+  title: 'The pelican brief',
+  content: 'A book by John Grisham, a really trilling read.',
+  access: 'READ'
 };
 
 Document.create(newDocument).then((document, err) => {
-  if(err) return err;
+  if (err) return err;
   console.log(document);
 });

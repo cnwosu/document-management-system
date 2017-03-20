@@ -1,16 +1,16 @@
-'use strict';
-module.exports = function(sequelize, DataTypes) {
-  var Roles = sequelize.define('Roles', {
-    tittle: {
+
+module.exports = (sequelize, DataTypes) => {
+  const Role = sequelize.define('Roles', {
+    title: {
       type: DataTypes.STRING,
       validate: { notEmpty: true }
     }
   }, {
     classMethods: {
-      associate: function(models) {
+      associate(models) {
         // associations can be defined here
       }
     }
   });
-  return Roles;
+  return Role;
 };
