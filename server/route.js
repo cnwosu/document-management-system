@@ -25,29 +25,29 @@ router.delete('/users/:id', Authorization.isAuthorized, usersController.deleteUs
 
 router.get('/search/users', usersController.searchUser);
 
-router.post('/documents/', documentController.newDocument);
+router.post('/documents/', Authorization.isAuthorized, documentController.newDocument);
 
-router.get('/documents/', documentController.getDocuments);
+router.get('/documents/', Authorization.isAuthorized, documentController.getDocuments);
 
-router.get('/documents/:id', documentController.findDocument);
+router.get('/documents/:id', Authorization.isAuthorized, documentController.findDocument);
 
-router.put('/documents/:id', documentController.updateDocument);
+router.put('/documents/:id', Authorization.isAuthorized, documentController.updateDocument);
 
-router.delete('/documents/:id', documentController.deleteDocument);
+router.delete('/documents/:id', Authorization.isAuthorized, documentController.deleteDocument);
 
 router.get('/users/:id/documents', usersController.userDocuments);
 
 router.get('/search/documents', documentController.searchDocument);
 
-router.post('/roles', roleController.createRole);
+router.post('/roles', Authorization.isAuthorized, Authorization.isAdmin, roleController.createRole);
 
-router.get('/roles', roleController.getRoles);
+router.get('/roles', Authorization.isAuthorized, roleController.getRoles);
 
-router.get('/roles/:id', roleController.getRoles);
+router.get('/roles/:id', Authorization.isAuthorized, roleController.getRoles);
 
-router.delete('/roles/:id', roleController.deleteRole);
+router.delete('/roles/:id', Authorization.isAuthorized, Authorization.isAdmin, roleController.deleteRole);
 
-router.put('/roles/:id', roleController.updateRole);
+router.put('/roles/:id', Authorization.isAuthorized, Authorization.isAdmin, roleController.updateRole);
 
 
 export default router;

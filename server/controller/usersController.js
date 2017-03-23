@@ -9,7 +9,7 @@ class usersController {
   static login(req, res) {
     User.findOne({ where: { email: req.body.email } }).then((user) => {
       if (bcrypt.compareSync(req.body.password, user.password_digest)) {
-        const tokenData = { email: user.email, roleId: user.roleId };
+        const tokenData = { userId: user.id, email: user.email, roleId: user.roleId };
         const token = jsonwebtoken.sign(tokenData, process.env.SECRET);
         res.status(200).json({ message: 'success', jwt: token });
       } else {
@@ -29,13 +29,13 @@ class usersController {
     user.username = req.body.username;
     user.password = req.body.password;
     user.password_confirmation = req.body.password_confirmation;
-    password_digest = password;
+    user.password_digest = password;
     user.email = req.body.email;
     user.roleId = req.body.roleId;
-    User.create(user).then((user) => {
-      const tokenData = { email: user.email, roleId: user.roleId };
+    User.create(user).then((userData) => {
+      const tokenData = { userId: userData.id, email: userData.email, roleId: userData.roleId };
       const token = jsonwebtoken.sign(tokenData, process.env.SECRET);
-      res.status(201).json(user);
+      res.status(201).json({ userData, token });
     }).catch((err) => {
       res.status(500).json({ error: err.message });
     });

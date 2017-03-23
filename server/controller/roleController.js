@@ -14,18 +14,18 @@ export default class RoleController {
  * @return {object} HTTP response
  */
   static createRole(req, res) {
-    db.Roles.create({
-      title: req.body.title
+    if (req.body.title.trim() === '') {
+      return res.status(400).send({ message: 'Specify role title' });
+    }
+    db.Roles.findOrCreate({
+      where: { title: req.body.title }
     })
-   .then((role, err) => {
-     if (err) {
-       res.status(500).json({ error: err.message });
+   .spread((role, created) => {
+     if (!created) {
+       res.status(409).json({ message: 'Role already exist' });
      } else {
-       res.status(200).json(role);
+       res.status(201).json(role);
      }
-   })
-   .catch((err) => {
-     res.status(500).json({ error: err.message });
    });
   }
 
@@ -39,9 +39,9 @@ export default class RoleController {
   static deleteRole(req, res) {
     db.Roles.destroy({ where: { id: req.params.id } }).then((role, err) => {
       if (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).send({ error: err.message });
       } else {
-        res.status(200).json({ success: 'Role successfully deleted' });
+        res.status(200).send({ message: 'Role successfully deleted' });
       }
     });
   }
@@ -54,12 +54,18 @@ export default class RoleController {
  * @return {object} HTTP response
  */
   static getRoles(req, res) {
+    if (req.token.roleId !== 1) {
+      return res.status(401).send({ message: 'User unauthorized' });
+    }
     const queryParam = (req.params.id)
       ? { where: { id: req.params.id } }
       : {};
     db.Roles.findAll(queryParam)
     .then((role) => {
-      res.status(200).send(role);
+      if (role.length === 0) {
+        return res.status(404).send({ message: 'Role does not exists' });
+      }
+      return res.status(200).send(role);
     });
   }
 

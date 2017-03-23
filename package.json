@@ -4,8 +4,8 @@
   "description": "a document management system",
   "main": "server.js",
   "scripts": {
-    "test": "npm run seed && mocha --compilers js:babel-core/register server/test/**/*.spec.js",
-    "start": "babel-node server.js --exec ",
+    "test": "npm run seed && mocha --compilers js:babel-core/register server/test/**/*.spec.js ",
+    "start": "babel-node server.js --presets es2015,stage-2",
     "seed": "node server/seeders/seeders"
   },
   "repository": {
@@ -68,6 +68,7 @@
     "gulp-nodemon": "^2.2.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
     "sinon": "^2.0.0",
     "supertest": "^3.0.0"
   }
