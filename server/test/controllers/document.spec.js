@@ -9,6 +9,12 @@ const expect = chai.expect;
 describe('Document', () => {
   let adminToken;
   let regularToken;
+  const newDocument = {
+    title: 'My document',
+    content: 'This is a cool document',
+    userId: 1,
+    access: 'private'
+  };
   let documentCreated;
   before((done) => {
     request.post('/api/users/login')
@@ -27,12 +33,7 @@ describe('Document', () => {
   it('should be able to create document', (done) => {
     request.post('/api/documents')
       .set('authorization', adminToken)
-      .send({
-        title: 'My document',
-        content: 'This is a cool document',
-        userId: 1,
-        access: 'public'
-      })
+      .send(newDocument)
       .expect(201)
       .then((res) => {
         documentCreated = res.body;
@@ -52,43 +53,33 @@ describe('Document', () => {
   it('should not be able to get documents not created by user', (done) => {
     request.get(`/api/documents/${documentCreated.id}`)
       .set('authorization', regularToken)
-      .expect(200)
-      .then(() => {
+      .expect(401)
+      .then((res) => {
+        expect(res.body.message).to.equal('User cannot access document');
         done();
       });
   });
 
   it('should ensure document has property set to public by default', () => {
-    expect(documentCreated.access).to.be.equal('public');
+    request.post('/api/documents')
+      .set('authorization', regularToken)
+      .send({
+        title: 'My default document',
+        content: 'This is a default document',
+        userId: 2
+      })
+      .expect(201)
+      .then((res) => {
+        expect(res.access).to.equal('public');
+      });
   });
 
   it('should ensure only the creator can access private document', (done) => {
-    request.post('/api/users/login')
-      .accept('Accept', 'application/json')
-      .send({
-        email: 'mike@mail.com',
-        password: 'mike',
-      })
+    request.get(`/api/documents/${documentCreated.id}`)
+      .set('authorization', adminToken)
       .expect(200)
-      .end((err, res) => {
-        const genToken = res.body.data.token;
-        request.get('/api/documents/3')
-          .set('authorization', genToken)
-          .expect(403)
-          .end((err2, res2) => {
-            expect(res2.body.status).to.be.equal('fail');
-            expect(res2.body.message).to.be.equal(
-              'You do not have permissions to view this document');
-
-            request.get('/api/documents/4')
-              .set('authorization', genToken)
-              .expect(200)
-              .end((err3, res3) => {
-                expect(res3.body.status).to.be.equal('success');
-                expect(res3.body.message).to.be.equal('Document info loaded');
-                done();
-              });
-          });
+      .then(() => {
+        done();
       });
   });
 
@@ -100,22 +91,19 @@ describe('Document', () => {
     request.get('/api/documents')
       .set('authorization', adminToken)
       .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('success');
-        expect(res.body.message).to.be.equal('Documents listed');
-        expect(res.body.data.length).to.be.equal(6);
+      .then(() => {
         done();
       });
   });
 
   it('should get limited documents', (done) => {
-    request.get('/api/documents?limit=2')
+    const limit = 2,
+      offset = 0;
+    request.get(`/api/documents?limit=${limit}&offset=${offset}`)
       .set('authorization', adminToken)
       .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('success');
-        expect(res.body.message).to.be.equal('Documents listed');
-        expect(res.body.data.length).to.be.equal(2);
+      .then((res) => {
+        expect(res.body.length).to.equal(limit);
         done();
       });
   });
@@ -124,87 +112,150 @@ describe('Document', () => {
     request.get('/api/documents')
       .set('authorization', adminToken)
       .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('success');
-        expect(res.body.message).to.be.equal('Documents listed');
-        expect(res.body.data[0].createdAt).to.be.above(res.body.data[1].createdAt);
+      .then((res) => {
+        expect(res.body[1].createdAt).to.not.be.above(res.body[0].createdAt);
         done();
       });
   });
 
   it('should be able to set offset and limit', (done) => {
-    request.get('/api/documents?limit=1&offset=3')
+    const limit = 2,
+      offset = 1;
+    request.get(`/api/documents?limit=${limit}&offset=${offset}`)
       .set('authorization', adminToken)
       .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('success');
-        expect(res.body.message).to.be.equal('Documents listed');
-        expect(res.body.data.length).to.be.equal(1);
-        expect(res.body.data[0].id).to.be.equal(3);
+      .then((res) => {
+        expect(res.body.length).to.equal(limit);
+        expect(res.body[0].id).to.equal(2);
         done();
       });
   });
 
-  it('should be able to update document', (done) => {
-    request.put('/api/documents/6')
+  it('should not view document not created by user and not set to public', (done) => {
+    request.get(`/api/documents/${documentCreated.id}`)
+      .set('authorization', regularToken)
+      .expect(401)
+      .then((res) => {
+        expect(res.body.message).to.equal('User cannot access document');
+        done();
+      });
+  });
+
+  it('should be able to update documents if requested by Admin', (done) => {
+    request.put('/api/documents/1')
       .set('authorization', adminToken)
       .send({
         title: 'My updated document',
         content: 'Dynamic document',
+        userId: 1,
+        access: 'private'
       })
       .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('success');
-        expect(res.body.message).to.be.equal('Document updated successfully');
+      .then((res) => {
+        expect(res.body.message).to.equal('Document details Updated');
         done();
       });
   });
 
-  it('should not be able to update document with incorrect details', (done) => {
-    request.put('/api/documents/6')
+  it('should not be able to update documents if not requested by Admin', (done) => {
+    request.put('/api/documents/1')
+      .set('authorization', regularToken)
+      .send({
+        title: 'My updated document',
+        content: 'Dynamic document',
+        userId: 2,
+        access: 'private'
+      })
+      .expect(401)
+      .then((res) => {
+        expect(res.body.message).to.equal('User Unauthorized');
+        done();
+      });
+  });
+
+  it('should be able to update documents if created by the user', (done) => {
+    request.post('/api/documents')
+      .set('authorization', regularToken)
+      .send({
+        title: 'My new document',
+        content: 'Dynamic document',
+        userId: 2,
+        access: 'public'
+      })
+      .expect(201)
+      .then((res) => {
+        request.put(`/api/documents/${res.body.id}`)
+            .set('authorization', regularToken)
+            .send({
+              title: 'My updated document',
+              content: 'Dynamic document',
+              userId: 2,
+              access: 'private'
+            })
+            .expect(200)
+            .then((res) => {
+              expect(res.body.message).to.equal('Document details Updated');
+              done();
+            });
+      });
+  });
+
+  it('should not be able to update documents if not created by the user', (done) => {
+    request.put(`/api/documents/${documentCreated.id}`)
+      .set('authorization', regularToken)
+      .send({
+        title: 'My updated document',
+        content: 'Dynamic document',
+        userId: 2,
+        access: 'private'
+      })
+      .expect(401)
+      .then((res) => {
+        expect(res.body.message).to.equal('User Unauthorized');
+        done();
+      });
+  });
+
+  it('should not be able to update document with invalid access type', (done) => {
+    request.put(`/api/documents/${documentCreated.id}`)
       .set('authorization', adminToken)
       .send({
-        title: '',
-        content: '',
-        access: '',
+        access: 'access',
       })
-      .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('fail');
-        expect(res.body.message).to.be.equal('You have errors in data submitted');
+      .expect(400)
+      .then((res) => {
+        expect(res.body.message).to.equal('Invalid request parameters');
         done();
       });
   });
 
   it('should not create document without title', (done) => {
     request.post('/api/documents/')
-      .set('Accept', 'application/json')
       .set('authorization', adminToken)
       .send({
         content: 'A document with no title',
       })
-      .expect(403)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('fail');
+      .expect(400)
+      .then((res) => {
+        expect(res.body.message).to.equal('Invalid request');
         done();
       });
   });
 
   it('should not create document without content', (done) => {
     request.post('/api/documents/')
-      .set('Accept', 'application/json')
       .set('authorization', adminToken)
       .send({
-        title: 'Another document',
+        title: 'Another invalid document',
       })
-      .expect(403)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('fail');
+      .expect(400)
+      .then((res) => {
+        expect(res.body.message).to.equal('Invalid request');
         done();
       });
   });
 
-  it('should not create document with invalid access', () => {
+  it('should not create document with invalid access', (done) => {
     request.post('/api/documents/')
       .set('Accept', 'application/json')
       .set('authorization', adminToken)
@@ -213,111 +264,50 @@ describe('Document', () => {
         content: 'This document has invalid access',
         access: 'asdf',
       })
-      .expect(403)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('fail');
+      .expect(400)
+      .then((res) => {
+        expect(res.body.message).to.equal('Invalid request');
         done();
       });
   });
 
   it('should not create document that already exists', (done) => {
     request.post('/api/documents/')
-      .set('Accept', 'application/json')
       .set('authorization', adminToken)
-      .send({
-        title: 'The parable of perry',
-        content: 'The content',
-      })
-      .expect(403)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('fail');
-        expect(res.body.message).to.be.equal('Document already exists');
+      .send(newDocument)
+      .expect(409)
+      .then((res) => {
+        expect(res.body.message).to.equal('Document already exists');
         done();
       });
   });
 
-  it('should be able to delete document', (done) => {
-    request.delete('/api/documents/6')
-      .set('Accept', 'application/json')
+  it('should not be able to delete others document', (done) => {
+    request.delete(`/api/documents/${documentCreated.id}`)
+      .set('authorization', regularToken)
+      .expect(401)
+      .then((res) => {
+        expect(res.body.message).to.equal('User Unauthorized');
+        done();
+      });
+  });
+
+  it('should be able to delete a document if user is admin', (done) => {
+    request.delete(`/api/documents/${documentCreated.id}`)
       .set('authorization', adminToken)
       .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('success');
-        expect(res.body.message).to.be.equal('Document deleted successfully');
+      .then((res) => {
+        expect(res.body.message).to.equal('Document successfully deleted');
         done();
       });
   });
 
-  it('should not be able to delete other document', (done) => {
-    request.delete('/api/documents/3')
-      .set('Accept', 'application/json')
+  it('should return 404 on non-existent document request', (done) => {
+    request.get('/api/documents/9089808')
       .set('authorization', adminToken)
-      .expect(403)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('fail');
-        expect(res.body.message).to.be.equal('You do not have permissions to view this document');
-        done();
-      });
-  });
-
-  it('should fail on non-existent document request', (done) => {
-    request.get('/api/documents/8')
-      .set('authorization', token)
       .expect(404)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('fail');
-        expect(res.body.message).to.be.equal('Document does not exists');
-        done();
-      });
-  });
-
-  it('should not view document not created by user', (done) => {
-    request.get('/api/documents/1')
-      .set('Accept', 'application/json')
-      .set('authorization', token)
-      .expect(403)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('fail');
-        expect(res.body.message).to.be.equal('You do not have permissions to view this document');
-        done();
-      });
-  });
-});
-
-describe('Search', () => {
-  it('should be able to access other user document marked as public', (done) => {
-    request.get('/api/documents?access=public')
-      .set('authorization', token)
-      .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('success');
-        expect(res.body.message).to.be.equal('Documents listed');
-        expect(res.body.data.length).to.be.equal(2);
-        done();
-      });
-  });
-
-  it('should get limited documents', (done) => {
-    request.get('/api/documents?limit=1')
-      .set('authorization', adminToken)
-      .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('success');
-        expect(res.body.message).to.be.equal('Documents listed');
-        expect(res.body.data.length).to.be.equal(1);
-        done();
-      });
-  });
-
-  it('should get limited documents', (done) => {
-    request.get('/api/documents?limit=1&role=regular')
-      .set('authorization', adminToken)
-      .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('success');
-        expect(res.body.message).to.be.equal('Documents listed');
-        expect(res.body.data.length).to.be.equal(1);
-        expect(res.body.data[0].role).to.be.equal('regular');
+      .then((res) => {
+        expect(res.body.message).to.equal('Document does not exist');
         done();
       });
   });

@@ -20,8 +20,7 @@ module.exports = (sequelize, DataTypes) => {
 
     access: {
       type: DataTypes.ENUM('public', 'private', 'role'),
-      defaultValue: 'public',
-      allowNull: false
+      defaultValue: 'public'
     }
   }, {
     classMethods: {
