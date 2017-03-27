@@ -4,18 +4,19 @@ language: node_js
 
 node_js: "6"
 
-script: npm test
-after_script:
-  - cat ./coverage/lcov.info | ./node_modules/.bin/coveralls.js
-  
+script: 
+- npm test
+
 before_script: 
   - psql -c 'create database document_ms_test;' -U postgres
   - npm i -g sequelize-cli
   - sequelize db:migrate --env=test
-  - sequelize db:seed --env=test --seed server/seeders/seeders.js
+
+after_script:
+  - cat ./coverage/lcov.info | ./node_modules/.bin/coveralls.js
 
 after_success:
-- npm run coveralls
+  - npm run coveralls
 
 services:
-  -postgresql
+  - postgresql
