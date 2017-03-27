@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const Sequelize = require('sequelize');
+require('dotenv').config();
 
 const basename = path.basename(module.filename);
 const env = process.env.NODE_ENV || 'development';
