@@ -8,8 +8,8 @@ const fakeDocument = {
   title: 'First attempt',
   content: 'The first time an incident occures, it is usually tricky',
   access: 'public'
-
 };
+
 describe('Document model', () => {
   it('should create a new document with complete credentials', (done) => {
     expect(fakeDocument).to.include.keys([
