@@ -9,10 +9,13 @@ after_script:
   - cat ./coverage/lcov.info | ./node_modules/.bin/coveralls.js
   
 before_script: 
-  - psql -c 'create database database_ms;' -U postgres
+  - psql -c 'create database document_ms_test;' -U postgres
   - npm i -g sequelize-cli
   - sequelize db:migrate --env=test
   - sequelize db:seed --env=test --seed server/seeders/seeders.js
 
 after_success:
 - npm run coveralls
+
+services:
+  -postgresql
