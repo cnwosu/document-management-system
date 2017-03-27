@@ -133,21 +133,25 @@ class documentController {
   }
 
   static searchDocument(req, res) {
-    if (req.query.q) {
-      Document.findOne({
-        where: {
-          title: {
-            $iLike: `%${req.query.q}%`
-          }
-        }
-      }).then((document) => {
-        res.status(200).json({ docs: document });
-      }).catch((err) => {
-        res.status(500).json({ error: err.message });
-      });
-    } else {
-      res.status(404).json({ error: 'Provide a query' });
+    if (!req.query.q) {
+      return res.status(400).json({ error: 'Provide a query' });
     }
+    const query = {
+      where: {
+        title: {
+          $like: `%${req.query.q}%`
+        }
+      }
+    };
+    if (req.token.roleId !== 1) {
+      query.where.userId = req.token.userId;
+    }
+    Document.findAll(query).then((documents) => {
+      if (!documents) {
+        return res.status(404).send({ message: 'Document not found' });
+      }
+      res.status(200).json(documents);
+    });
   }
 }
 

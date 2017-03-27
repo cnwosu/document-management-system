@@ -9,19 +9,28 @@ require('dotenv').config();
 
 class AuthorizationController {
   static getToken(request, response) {
-    if (request.headers.authorization) {
-      return request.headers.authorization;
+    if (!request.headers.authorization) {
+      return response.status(401).json({ message: 'User unauthorized' });
     }
-    response.status(500).json({ error: 'You are not signed in' });
+    return request.headers.authorization;
   }
 
   static isAuthorized(req, res, next) {
-    const verifyToken = jwt.verify(AuthorizationController.getToken(req, res), process.env.SECRET);
+    if (!req.headers.authorization) {
+      return res.status(401).json({ message: 'User unauthorized' });
+    }
+    let verifyToken;
+    try {
+      verifyToken = jwt.verify(AuthorizationController.getToken(req, res), process.env.SECRET);
+    } catch (e) {
+      // Token is malformed hence unauthorized
+      return res.status(401).json({ message: 'User unauthorized' });
+    }
     if (verifyToken) {
       req.token = verifyToken;
       next();
     } else {
-      res.status(401).json({ message: 'Token expired' });
+      res.status(401).json({ message: 'User unauthorized' });
     }
   }
 
@@ -32,23 +41,6 @@ class AuthorizationController {
       return res.status(401).json({ message: 'Only an admin can perform this action' });
     }
     next();
-  //   User.findOne({
-  //     where: {
-  //       id: decodedToken.user.idß
-  //     }
-  //   })
-  //  .then((user) => {
-  //    // Admin has a roleId of 1
-  //    if (user.roleId === 1) {
-  //      next();
-  //    } else {
-  //      return res.status(401)
-  //        .json({ error: 'Only an admin can perform this action' });
-  //    }
-  //  })
-  //    .catch((error) => {
-  //      res.status(401).json({ error: error.message });
-  //    });
   }
 }
 

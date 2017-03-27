@@ -1,6 +1,6 @@
-import db from '../models/index';
-import bcrypt from 'bcrypt-nodejs';
 import jsonwebtoken from 'jsonwebtoken';
+import bcrypt from 'bcrypt-nodejs';
+import db from '../models/index';
 
 const User = db.User;
 
@@ -8,12 +8,12 @@ class usersController {
 
   static login(req, res) {
     User.findOne({ where: { email: req.body.email } }).then((user) => {
-      if (bcrypt.compareSync(req.body.password, user.password_digest)) {
+      if (user && bcrypt.compareSync(req.body.password, user.password_digest)) {
         const tokenData = { userId: user.id, email: user.email, roleId: user.roleId };
         const token = jsonwebtoken.sign(tokenData, process.env.SECRET);
         res.status(200).json({ message: 'success', jwt: token });
       } else {
-        res.status(500).json({ error: err.message });
+        res.status(401).json({ message: 'Login failed' });
       }
     });
   }
@@ -23,21 +23,35 @@ class usersController {
   }
 
   static newUser(req, res) {
-    const user = {};
+    if (!req.body.fullname || !req.body.username || !req.body.password
+    || !req.body.email || !req.body.roleId) {
+      return res.status(400).send({ message: 'Incomplete details' });
+    } else if (req.body.fullname.trim() === '' || req.body.username.trim() === ''
+    || req.body.password.trim() === '' || req.body.email.trim() === ''
+    || (!parseInt(req.body.roleId, 10))) {
+      return res.status(400).send({ message: 'Invalid details' });
+    }
     const password = bcrypt.hashSync(req.body.password);
-    user.fullname = req.body.fullname;
-    user.username = req.body.username;
-    user.password = req.body.password;
-    user.password_confirmation = req.body.password_confirmation;
-    user.password_digest = password;
-    user.email = req.body.email;
-    user.roleId = req.body.roleId;
-    User.create(user).then((userData) => {
+    User.findOrCreate({
+      where: {
+        email: req.body.email
+      },
+      defaults: {
+        fullname: req.body.fullname,
+        username: req.body.username,
+        password_confirmation: req.body.password_confirmation,
+        password_digest: password,
+        password: req.body.password,
+        email: req.body.email,
+        roleId: req.body.roleId
+      }
+    }).spread((userData, created) => {
+      if (!created) {
+        return res.status(409).json({ message: 'User already exists' });
+      }
       const tokenData = { userId: userData.id, email: userData.email, roleId: userData.roleId };
       const token = jsonwebtoken.sign(tokenData, process.env.SECRET);
       res.status(201).json({ userData, token });
-    }).catch((err) => {
-      res.status(500).json({ error: err.message });
     });
   }
 
@@ -55,16 +69,18 @@ class usersController {
     User.all(queryParams).then((users) => {
       res.status(200).json({ users });
     }).catch((err) => {
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ message: err.message });
     });
   }
 
   static findUser(req, res) {
     User.findOne({ where: { id: req.params.id } }).then((user) => {
-      if (user) {
+      if (user && (user.id === req.token.userId || req.token.roleId === 1)) {
         res.status(200).json({ user });
+      } else if (user && (user.id !== req.token.userId && req.token.roleId !== 1)) {
+        res.status(409).json({ message: 'User Unauthorised' });
       } else {
-        res.status(500).json({ error: 'User does not exsist' });
+        res.status(404).json({ message: 'User does not exist' });
       }
     });
   }
@@ -77,9 +93,9 @@ class usersController {
         user.username = req.body.username;
         user.password = req.body.password;
         user.password_confirmation = req.body.password_confirmation;
-        password_digest = password;
+        user.password_digest = password;
         user.save().then(() => {
-          res.status(200).json({ success: 'User details Updated' });
+          res.status(200).json({ message: 'User details Updated' });
         }).catch((err) => {
           res.status(500).json({ error: err.message });
         });
@@ -111,7 +127,7 @@ class usersController {
     User.findOne({ where: { id: req.params.id } }).then((user) => {
       if (user) {
         user.getDocuments().then((documents) => {
-          res.status(200).json({ docs: document });
+          res.status(200).json({ message: 'success', documents });
         });
       } else {
         res.status(500).json({ error: err.message });
@@ -121,12 +137,12 @@ class usersController {
 
   static deleteUser(req, res) {
     User.findOne({ where: { id: req.params.id } }).then((user) => {
-      if (user.email === req.token.email || req.token.roleIc === 1) {
-        User.destroy({ where: { id: req.params.id } }).then((user, err) => {
+      if (user.email === req.token.email || req.token.roleId === 1) {
+        User.destroy({ where: { id: req.params.id } }).then((info, err) => {
           if (err) {
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ message: 'Could not delete user' });
           } else {
-            res.status(200).json({ success: 'User successfully deleted' });
+            res.status(204).json({ message: 'User successfully deleted' });
           }
         });
       } else {

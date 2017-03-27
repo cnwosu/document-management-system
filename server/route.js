@@ -17,13 +17,13 @@ router.post('/users', usersController.newUser);
 router.get('/users', Authorization.isAuthorized, Authorization.isAdmin,
 usersController.getUsers);
 
-router.get('/users/:id', usersController.findUser);
+router.get('/users/:id', Authorization.isAuthorized, usersController.findUser);
 
 router.put('/users/:id', Authorization.isAuthorized, usersController.updateUser);
 
 router.delete('/users/:id', Authorization.isAuthorized, usersController.deleteUser);
 
-router.get('/search/users', usersController.searchUser);
+router.get('/search/users', Authorization.isAuthorized, usersController.searchUser);
 
 router.post('/documents/', Authorization.isAuthorized, documentController.newDocument);
 
@@ -35,9 +35,9 @@ router.put('/documents/:id', Authorization.isAuthorized, documentController.upda
 
 router.delete('/documents/:id', Authorization.isAuthorized, documentController.deleteDocument);
 
-router.get('/users/:id/documents', usersController.userDocuments);
+router.get('/users/:id/documents', Authorization.isAuthorized, usersController.userDocuments);
 
-router.get('/search/documents', documentController.searchDocument);
+router.get('/search/documents', Authorization.isAuthorized, documentController.searchDocument);
 
 router.post('/roles', Authorization.isAuthorized, Authorization.isAdmin, roleController.createRole);
 

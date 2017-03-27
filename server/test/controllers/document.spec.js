@@ -311,4 +311,41 @@ describe('Document', () => {
         done();
       });
   });
+
+  describe('Search', () => {
+    it('should search documents specified by a given title', (done) => {
+      request.get('/api/search/documents?q=updated')
+      .set('authorization', adminToken)
+      .expect(200)
+      .then((res) => {
+        expect(res.body.length).to.not.equal(0);
+        done();
+      });
+    });
+
+    it('should get documents limited by number and published on a certain date', (done) => {
+      request.get('/api/search/documents?limit=1')
+      .set('authorization', adminToken)
+      .expect(200)
+      .end((err, res) => {
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body.message).to.be.equal('Documents listed');
+        expect(res.body.data.length).to.be.equal(1);
+        done();
+      });
+    });
+
+    it('should get documents created by specified role', (done) => {
+      request.get('/api/documents?limit=1&role=regular')
+      .set('authorization', adminToken)
+      .expect(200)
+      .end((err, res) => {
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body.message).to.be.equal('Documents listed');
+        expect(res.body.data.length).to.be.equal(1);
+        expect(res.body.data[0].role).to.be.equal('regular');
+        done();
+      });
+    });
+  });
 });

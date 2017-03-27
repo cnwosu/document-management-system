@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     password_digest: {
       type: DataTypes.STRING,
-      validate: { len: [6, 10] }
+      validate: { notEmpty: true }
     },
     email: {
       type: DataTypes.STRING,
@@ -41,8 +41,5 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     });
-  // User.beforeCreate((user, options, callback) => {
-  //   user.email = user.email.toLocaleLowerCase();
-  // });
   return User;
 };
