@@ -9,8 +9,6 @@ require('dotenv').config();
 const basename = path.basename(module.filename);
 const env = process.env.NODE_ENV || 'development';
 
-console.log(env, "<------ HERE");
-
 const config = require('../../server/config/config.json')[env];
 
 const db = {};
