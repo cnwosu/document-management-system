@@ -133,15 +133,24 @@ class documentController {
   }
 
   static searchDocument(req, res) {
-    if (!req.query.q) {
-      return res.status(400).json({ error: 'Provide a query' });
+    if (!req.query.title && !req.query.access && !req.query.ownerRoleId) {
+      return res.status(400).json({ error: 'Provide a valid query' });
     }
+    const searchTitle = (req.query.title) ? req.query.title : null;
+    const searchAccess = (req.query.access) ? req.query.access : 'public';
+    const searchRoleId = (req.query.ownerRoleId) ? req.query.ownerRoleId : 0;
+    const limit = (req.query.limit) ? req.query.limit : 10;
     const query = {
       where: {
-        title: {
-          $like: `%${req.query.q}%`
+        $or: {
+          title: {
+            $like: `%${searchTitle}%`
+          },
+          ownerRoleId: searchRoleId,
+          access: searchAccess
         }
-      }
+      },
+      limit
     };
     if (req.token.roleId !== 1) {
       query.where.userId = req.token.userId;

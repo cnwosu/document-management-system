@@ -15,6 +15,12 @@ describe('Document', () => {
     userId: 1,
     access: 'private'
   };
+  const newPublicDocument = {
+    title: 'My public document',
+    content: 'This is a public document',
+    userId: 1,
+    access: 'public'
+  };
   let documentCreated;
   before((done) => {
     request.post('/api/users/login')
@@ -105,6 +111,22 @@ describe('Document', () => {
       .then((res) => {
         expect(res.body.length).to.equal(limit);
         done();
+      });
+  });
+
+  it('should be able to access other user document marked as public', (done) => {
+    request.post('/api/documents')
+      .set('authorization', adminToken)
+      .send(newPublicDocument)
+      .expect(201)
+      .then((res) => {
+        const publicDocument = res.body;
+        request.get(`/api/documents/${publicDocument.id}`)
+        .set('authorization', regularToken)
+        .expect(200)
+        .then(() => {
+          done();
+        });
       });
   });
 
@@ -314,7 +336,7 @@ describe('Document', () => {
 
   describe('Search', () => {
     it('should search documents specified by a given title', (done) => {
-      request.get('/api/search/documents?q=updated')
+      request.get('/api/search/documents?title=updated')
       .set('authorization', adminToken)
       .expect(200)
       .then((res) => {
@@ -324,26 +346,22 @@ describe('Document', () => {
     });
 
     it('should get documents limited by number and published on a certain date', (done) => {
-      request.get('/api/search/documents?limit=1')
+      const limit = 1;
+      request.get(`/api/search/documents?title=at&limit=${limit}`)
       .set('authorization', adminToken)
       .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('success');
-        expect(res.body.message).to.be.equal('Documents listed');
-        expect(res.body.data.length).to.be.equal(1);
+      .then((res) => {
+        expect(res.body.length).to.equal(limit);
         done();
       });
     });
 
     it('should get documents created by specified role', (done) => {
-      request.get('/api/documents?limit=1&role=regular')
+      request.get('/api/documents?title=updated&ownerRoleId=2')
       .set('authorization', adminToken)
       .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('success');
-        expect(res.body.message).to.be.equal('Documents listed');
-        expect(res.body.data.length).to.be.equal(1);
-        expect(res.body.data[0].role).to.be.equal('regular');
+      .then((res) => {
+        expect(res.body.length).to.not.equal(0);
         done();
       });
     });

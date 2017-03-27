@@ -211,17 +211,4 @@ describe('User', () => {
           done();
         });
   });
-  describe('Search', () => {
-    it('should be able to access other user document marked as public', (done) => {
-      request.get('/api/documents?access=public')
-      .set('authorization', regularToken)
-      .expect(200)
-      .end((err, res) => {
-        expect(res.body.status).to.be.equal('success');
-        expect(res.body.message).to.be.equal('Documents listed');
-        expect(res.body.data.length).to.be.equal(2);
-        done();
-      });
-    });
-  });
 });
