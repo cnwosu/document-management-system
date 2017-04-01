@@ -113,7 +113,8 @@ class Login extends Component {
         localStorage.setItem('token', response.token);
         let userData = {
           fullname: response.userData.fullname,
-          roleId: response.userData.roleId
+          roleId: response.userData.roleId,
+          userId: response.userData.id
         };
         sessionStorage.setItem('userData', JSON.stringify(userData));
         this.setState({

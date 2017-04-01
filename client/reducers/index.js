@@ -13,6 +13,8 @@ export default function rootReducer(state = initialState, action) {
       return state.set('isLoggedIn', action.isLoggedIn);
     case actionTypes.signupAction:
       return state.set('isLoggedIn', action.isLoggedIn);
+    case actionTypes.createDocAction:
+      return state.set('documentCreated', action.documentCreated);
     default:
       return state;
   }

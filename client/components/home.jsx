@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Collapsible, CollapsibleItem } from 'react-materialize';
+import { Collapsible, CollapsibleItem, Row, Input } from 'react-materialize';
 
 class HomePage extends Component {
   constructor(props) {
@@ -7,12 +7,15 @@ class HomePage extends Component {
     this.state = {
       allDocuments: []
     };
-    this.showDoc = this.showDoc.bind(this);
+    this.createDoc = this.createDoc.bind(this);
+    this.getDocuments = this.getDocuments.bind(this);
   }
     // Load all documents accesible to the user when user logs in.
   componentDidMount() {
+    this.getDocuments();
+  }
+  getDocuments() {
     // Get user token from localstorage
-    // $('.carousel.carousel-slider').carousel({ fullWidth: true });
     const token = localStorage.getItem('token');
     const options = {
       method: 'GET',
@@ -34,21 +37,35 @@ class HomePage extends Component {
         });
       });
   }
-  showDoc() {
-    return (this.state.allDocuments.length > 0) ?
-      this.state.allDocuments.map(doc => (
-        <div key={doc.id} id={`doc${doc.id}`}>
-          <h2>{doc.title}</h2>
-          <p className="white-text">{doc.content}</p>
-        </div>
-        ))
-     : <div />;
+  createDoc(e) {
+    e.preventDefault();
+    const userData = JSON.parse(sessionStorage.getItem('userData'));
+    const title = document.getElementById('document_title').value;
+    const content = document.getElementById('document_content').value;
+    const access = document.getElementById('document_access').value;
+    const userId = userData.userId;
+
+    // Validate that title/content is not empty like if(title.trim() !== "")
+    const token = localStorage.getItem('token');
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        Authorization: token
+      },
+      body: `title=${title}&content=${content}&access=${access}&userId=${userId}`
+    };
+    const url = `${window.location.href}api/documents`;
+    fetch(url, options).then(data => data.json())
+      .then((res) => {
+        if (res && res.id) {
+          this.getDocuments();
+        }
+      });
   }
   render() {
     $('select').material_select();
     $('#modal1').modal();
-    // $('.carousel.carousel-slider').carousel({ fullWidth: true });
-    // $('.carousel').carousel();
 
     const textareaStyle = {
       position: 'relative',
@@ -56,13 +73,17 @@ class HomePage extends Component {
       height: '200px',
       letterSpacing: 3
     };
+    const titleStyle = {
+      letterSpacing: 3,
+      fontWeight: 'bold',
+      fontSize: '20px'
+    };
     const document = (this.state.allDocuments.length > 0)
       ? this.state.allDocuments.map(doc =>
         (<CollapsibleItem key={doc.id} header={doc.title} icon="library_books">
           { doc.content }
         </CollapsibleItem>))
       : <div />;
-    // document.getElementById('doc1').className = 'carousel-item teal white-text';
     return (
       <div className="row">
         <div className="col s12">
@@ -105,17 +126,23 @@ class HomePage extends Component {
         </div>
         <hr />
 
-        {/*  Modal Trigger  */}
-        {/* <a className="modal-trigger waves-effect waves-light btn" href="#modal1">Modal</a>*/}
-
         {/* Modal Structure  */}
         <div id="modal1" className="modal modal-fixed-footer">
           <div className="modal-content">
             <h4>New Document</h4>
-            <textarea id="newDocumentContent" placeholder="type document content here . . ." style={textareaStyle} />
+            <Row>
+              <Input id="document_title" placeholder="Enter document title. . ." style={titleStyle} s={6} validate />
+              <Input id="document_access" s={6} type="select" defaultValue="default">
+                <option value="defualt">Select Document Access</option>
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+                <option value="role">Role</option>
+              </Input>
+            </Row>
+            <textarea id="document_content" placeholder="type document content here . . ." style={textareaStyle} />
           </div>
           <div className="modal-footer">
-            <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat ">SAVE</a>
+            <a onClick={this.createDoc} className="modal-action modal-close waves-effect waves-green btn-flat ">SAVE</a>
             <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat ">SAVE DRAFT</a>
             <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat ">CANCEL</a>
           </div>

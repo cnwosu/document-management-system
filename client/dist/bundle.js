@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "11b6f16bceecf7b9b81c"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1e64e67e86a25dc7461e"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -6393,6 +6393,10 @@ function rootReducer() {
       return state.set('isLoggedIn', action.isLoggedIn);
     case _actionTypes2.default.loginAction:
       return state.set('isLoggedIn', action.isLoggedIn);
+    case _actionTypes2.default.signupAction:
+      return state.set('isLoggedIn', action.isLoggedIn);
+    case _actionTypes2.default.createDocAction:
+      return state.set('documentCreated', action.documentCreated);
     default:
       return state;
   }
@@ -14946,7 +14950,6 @@ var store = configureStore();
 
 var unsubscribe = store.subscribe(function () {
   // For monitoring store changes
-  // console.log(store.getState());
 });
 
 _reactDom2.default.render(_react2.default.createElement(
@@ -15491,7 +15494,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = (0, _keymirror2.default)({
   NEW_ACTION: null,
-  loginAction: null
+  loginAction: null,
+  signupAction: null,
+  createDocAction: null
 });
 
 /***/ }),
@@ -15508,6 +15513,20 @@ var loginAction = exports.loginAction = function loginAction(user) {
   return {
     type: 'LOGIN_ACTION',
     user: user
+  };
+};
+
+var signupAction = exports.signupAction = function signupAction(user) {
+  return {
+    type: 'SIGNUP_ACTION',
+    user: user
+  };
+};
+
+var createDocAction = exports.createDocAction = function createDocAction(document) {
+  return {
+    type: 'CREATEDOC_ACTION',
+    document: document
   };
 };
 
@@ -15750,6 +15769,7 @@ var HomePage = function (_Component) {
       allDocuments: []
     };
     _this.showDoc = _this.showDoc.bind(_this);
+    _this.createDoc = _this.createDoc.bind(_this);
     return _this;
   }
   // Load all documents accesible to the user when user logs in.
@@ -15779,8 +15799,35 @@ var HomePage = function (_Component) {
       fetch(url, options).then(function (data) {
         return data.json();
       }).then(function (res) {
-        console.log(res);
         _this2.setState({
+          allDocuments: res
+        });
+      });
+    }
+  }, {
+    key: 'createDoc',
+    value: function createDoc(e) {
+      var _this3 = this;
+
+      e.preventDefault();
+      var title = document.getElementById('document_title').value;
+      var content = document.getElementById('document_content').value;
+
+      // Validate that title/content is not empty like if(title.trim() !== "")
+      var token = localStorage.getItem('token');
+      var options = {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          Authorization: token
+        },
+        body: 'title=' + title + '&content=' + content
+      };
+      var url = window.location.href + 'api/documents';
+      fetch(url, options).then(function (data) {
+        return data.json();
+      }).then(function (res) {
+        _this3.setState({
           allDocuments: res
         });
       });
@@ -15810,14 +15857,17 @@ var HomePage = function (_Component) {
     value: function render() {
       $('select').material_select();
       $('#modal1').modal();
-      // $('.carousel.carousel-slider').carousel({ fullWidth: true });
-      // $('.carousel').carousel();
 
       var textareaStyle = {
         position: 'relative',
         width: '100%',
         height: '200px',
         letterSpacing: 3
+      };
+      var titleStyle = {
+        letterSpacing: 3,
+        fontWeight: 'bold',
+        fontSize: '20px'
       };
       var document = this.state.allDocuments.length > 0 ? this.state.allDocuments.map(function (doc) {
         return _react2.default.createElement(
@@ -15826,7 +15876,6 @@ var HomePage = function (_Component) {
           doc.content
         );
       }) : _react2.default.createElement('div', null);
-      // document.getElementById('doc1').className = 'carousel-item teal white-text';
       return _react2.default.createElement(
         'div',
         { className: 'row' },
@@ -15921,14 +15970,43 @@ var HomePage = function (_Component) {
               null,
               'New Document'
             ),
-            _react2.default.createElement('textarea', { id: 'newDocumentContent', placeholder: 'type document content here . . .', style: textareaStyle })
+            _react2.default.createElement(
+              _reactMaterialize.Row,
+              null,
+              _react2.default.createElement(_reactMaterialize.Input, { id: 'document_title', placeholder: 'Enter document title. . .', style: titleStyle, s: 6, validate: true }),
+              _react2.default.createElement(
+                _reactMaterialize.Input,
+                { s: 6, type: 'select', defaultValue: 'default' },
+                _react2.default.createElement(
+                  'option',
+                  { value: 'defualt' },
+                  'Select Document Access'
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: 'public' },
+                  'Public'
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: 'private' },
+                  'Private'
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: 'role' },
+                  'Role'
+                )
+              )
+            ),
+            _react2.default.createElement('textarea', { id: 'document_content', placeholder: 'type document content here . . .', style: textareaStyle })
           ),
           _react2.default.createElement(
             'div',
             { className: 'modal-footer' },
             _react2.default.createElement(
               'a',
-              { href: '#!', className: 'modal-action modal-close waves-effect waves-green btn-flat ' },
+              { onClick: this.createDoc, className: 'modal-action modal-close waves-effect waves-green btn-flat ' },
               'SAVE'
             ),
             _react2.default.createElement(
@@ -16009,6 +16087,7 @@ var Login = function (_Component) {
     _this.validateUser = _this.validateUser.bind(_this);
     _this.validateEmail = _this.validateEmail.bind(_this);
     _this.setSignup = _this.setSignup.bind(_this);
+    _this.registerUser = _this.registerUser.bind(_this);
     return _this;
   }
 
@@ -16044,11 +16123,6 @@ var Login = function (_Component) {
       if (password.trim().length < 1) {
         errors.push('Password is required');
       }
-
-      // if (errors.length == 0) {
-      //   config.api + '/login';
-      // }
-
       var url = window.location.href + 'api/users/login';
       var options = {
         method: 'POST',
@@ -16077,7 +16151,7 @@ var Login = function (_Component) {
       }).catch(function (error) {
         console.log('err:', error);
       });
-      this.props.updateUser(this.state.isLoggedIn);
+      this.props.updateUser(this.state.isLoggedIn, 'LOGIN_ACTION');
     }
   }, {
     key: 'setSignup',
@@ -16090,6 +16164,57 @@ var Login = function (_Component) {
       this.setState({
         isNewUser: newUser
       });
+    }
+  }, {
+    key: 'registerUser',
+    value: function registerUser(e) {
+      var _this3 = this;
+
+      e.preventDefault();
+      var username = document.getElementById('username').value;
+      var fullname = document.getElementById('fullname').value;
+      var passwordConfirmation = document.getElementById('password_confirmation').value;
+      var password = document.getElementById('user-password').value;
+      var email = document.getElementById('user-email').value;
+      // specify default roleId of 2 for all users by default
+      var roleId = 2;
+
+      var url = window.location.href + 'api/users';
+      var query = 'email=' + email + '&password=' + password + '&username=' + username;
+      query += '&fullname=' + fullname + '&password_confirmation=' + passwordConfirmation + '&roleId=' + roleId;
+      var options = {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: query
+      };
+      fetch(url, options).then(function (data) {
+        return data.json();
+      }).then(function (response) {
+        if (response && response.userData) {
+          // Set the JWT on the localstorage and dispatch to store
+          localStorage.setItem('token', response.token);
+          var userData = {
+            fullname: response.userData.fullname,
+            roleId: response.userData.roleId,
+            userId: response.userData.id
+          };
+          sessionStorage.setItem('userData', JSON.stringify(userData));
+          _this3.setState({
+            isLoggedIn: true
+          });
+          window.location.reload();
+        } else {
+          // Login failed handle action
+          _this3.setState({
+            isLoggedIn: false
+          });
+        }
+      }).catch(function (error) {
+        console.log('err:', error);
+      });
+      this.props.updateUser(this.state.isLoggedIn, 'SIGNUP_ACTION');
     }
   }, {
     key: 'render',
@@ -16114,10 +16239,10 @@ var Login = function (_Component) {
             _reactMaterialize.Row,
             null,
             _react2.default.createElement(_reactMaterialize.Input, { id: 'user-email', type: 'email', label: 'Email', s: 12, validate: true }),
-            _react2.default.createElement(_reactMaterialize.Input, { id: 'user-password', type: 'password', label: 'password', s: 12 }),
-            _react2.default.createElement(_reactMaterialize.Input, { id: 'password_confirmation', type: 'password', label: 'Confirm Password', s: 12 }),
-            _react2.default.createElement(_reactMaterialize.Input, { id: 'fullname', type: 'text', label: 'Fullname', s: 12 }),
-            _react2.default.createElement(_reactMaterialize.Input, { id: 'username', type: 'text', label: 'Username', s: 12 })
+            _react2.default.createElement(_reactMaterialize.Input, { id: 'user-password', type: 'password', label: 'password', s: 12, validate: true }),
+            _react2.default.createElement(_reactMaterialize.Input, { id: 'password_confirmation', type: 'password', label: 'Confirm Password', s: 12, validate: true }),
+            _react2.default.createElement(_reactMaterialize.Input, { id: 'fullname', type: 'text', label: 'Fullname', s: 12, validate: true }),
+            _react2.default.createElement(_reactMaterialize.Input, { id: 'username', type: 'text', label: 'Username', s: 12, validate: true })
           ),
           _react2.default.createElement(
             _reactMaterialize.Row,
@@ -16154,19 +16279,16 @@ var Login = function (_Component) {
 }(_react.Component);
 
 var mapStateToProps = function mapStateToProps(state) {
-  return (
-    // console.log('Map props state:::::', state);
-    {
-      isLoggedIn: state.get('isLoggedIn')
-    }
-  );
+  return {
+    isLoggedIn: state.get('isLoggedIn')
+  };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
   return {
-    updateUser: function updateUser(isLoggedIn) {
+    updateUser: function updateUser(isLoggedIn, action) {
       var currentUser = {
-        type: 'LOGIN_ACTION',
+        type: action,
         isLoggedIn: isLoggedIn
       };
       dispatch((0, _reducers2.default)(currentUser));
@@ -16275,7 +16397,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
   return {
     updateUser: function updateUser(isLoggedIn) {
       var currentUser = {
-        type: 'NEW_ACTION',
+        type: 'LOGIN_ACTION',
         isLoggedIn: isLoggedIn
       };
       dispatch((0, _reducers2.default)(currentUser));
