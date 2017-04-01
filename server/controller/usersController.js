@@ -11,7 +11,8 @@ class usersController {
       if (user && bcrypt.compareSync(req.body.password, user.password_digest)) {
         const tokenData = { userId: user.id, email: user.email, roleId: user.roleId };
         const token = jsonwebtoken.sign(tokenData, process.env.SECRET);
-        res.status(200).json({ message: 'success', jwt: token });
+        const userDetails = { fullname: user.fullname, roleId: user.roleId };
+        res.status(200).json({ message: 'success', jwt: token, userData: userDetails });
       } else {
         res.status(401).json({ message: 'Login failed' });
       }

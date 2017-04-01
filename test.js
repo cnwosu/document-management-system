@@ -10,10 +10,8 @@ let newUser = {
 
 // var userBuild = User.build(newUser);
 
-// console.log(userBuild);
 User.create(newUser).then((user) => {
   // if(err) return err;
-  console.log(user);
 });
 
 let Document = require('./server/models/index.js').Document;
@@ -27,5 +25,4 @@ let newDocument = {
 
 Document.create(newDocument).then((document, err) => {
   if (err) return err;
-  console.log(document);
 });

@@ -1,0 +1,42 @@
+.page-footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+.d-header{
+    // margin-top: 20px;
+}
+.site-title{
+    font-size: 20px !important;
+    padding-left: 20px !important;
+}
+
+.login-title {
+    font-size:25px;
+    color: #777;
+    margin: 30px 20px;
+    text-align: center;
+}
+
+.add-document {
+    width: 150px;
+    text-align: center;
+    margin: 20px;
+}
+
+.add-document a{
+    color: inherit !important;
+}
+
+.add-document i{
+    color: #0a5851;
+}
+
+.submit-button {
+    margin-left: 20px;
+}
+
+.search-filter {
+    margin: 20px;
+}

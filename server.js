@@ -1,15 +1,26 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import path from 'path';
+import dotenv from 'dotenv';
 import router from './server/route';
+
+const webpackDevHelper = require('./index.dev.js');
+
+dotenv.config();
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', router);
 
+if (process.env.NODE_ENV !== 'production') {
+  webpackDevHelper.useWebpackMiddleware(app);
+} else {
+  app.use(express.static(path.join(__dirname, './client/dist')));
+}
 app.get('/', (req, res) => {
-  res.json({ message: 'This is your best document manager' });
+  res.sendFile(path.join(__dirname, './client/index.html'));
 });
 
 /**
