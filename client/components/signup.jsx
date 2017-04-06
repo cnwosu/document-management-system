@@ -3,17 +3,12 @@ import { connect } from 'react-redux';
 import { Router, Route, browserHistory, hashHistory, Link } from 'react-router';
 import rootReducer from '../reducers';
 import { Button, Row, Col, Icon, Input } from 'react-materialize';
-import { loginAction } from '../actions';
+import { signupAction } from '../actions';
 import config from '../config/config.js';
 
-class Login extends Component {
+class Signup extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isLoggedIn: false,
-      isNewUser: false
-    };
-    this.validateUser = this.validateUser.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
     this.setSignup = this.setSignup.bind(this);
     this.registerUser = this.registerUser.bind(this);
@@ -30,52 +25,7 @@ class Login extends Component {
     const atPosMinus = email.substring(atPos - 1, atPos);
     return (atPos > 0 && dotPos > atPos && wsp < 0 && re.test(atPosMinus));
   }
-  validateUser(event) {
-    event.preventDefault();
-    const email = document.getElementById('user-email').value;
-    const password = document.getElementById('user-password').value;
 
-    const data = `${email} ${password}`;
-    const errors = [];
-
-    if (!this.validateEmail(email)) {
-      errors.push('Please enter a valid email address');
-    }
-
-    if (password.trim().length < 1) {
-      errors.push('Password is required');
-    }
-    const url = `${config.api}/users/login`;
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      body: `email=${email}&password=${password}`
-    };
-    fetch(url, options)
-    .then(data => data.json())
-    .then((response) => {
-      if (response && response.message === 'success') {
-        // Set the JWT on the localstorage and dispatch to store
-        localStorage.setItem('token', response.jwt);
-        sessionStorage.setItem('userData', JSON.stringify(response.userData));
-        this.setState({
-          isLoggedIn: true
-        });
-        browserHistory.push('/home');
-      } else {
-        // Login failed handle action
-        this.setState({
-          isLoggedIn: false
-        });
-      }
-    })
-    .catch((error) => {
-      console.log('err:', error);
-    });
-    this.props.updateUser(this.state.isLoggedIn, 'LOGIN_ACTION');
-  }
   setSignup(e) {
     e.preventDefault();
     let newUser = true;
@@ -138,18 +88,19 @@ class Login extends Component {
     return (
       <div className="row">
         <div className="col s8 offset-s2">
-          <div className="login-title">{(!this.state.isNewUser) ? 'Login' : 'Register' }</div>
+          <div className="login-title">Register</div>
             <Row>
               <Input id="user-email" type="email" label="Email" s={12} validate />
-              <Input id="user-password" type="password" label="password" s={12} />
+              <Input id="user-password" type="password" label="password" s={12} validate />
+              <Input id="password_confirmation" type="password" label="Confirm Password" s={12} validate />
+              <Input id="fullname" type="text" label="Fullname" s={12} validate />
+              <Input id="username" type="text" label="Username" s={12} validate />
             </Row>
-  
-          <Row>
-            <Col s={6}>
-            <Button id="login-button" className="login-button" waves="light" onClick={this.validateUser}>Signin</Button>
-              <Link to="/signup" className="waves-effect waves-light btn signin-button">Signup</Link>
-            </Col>
-          </Row>
+
+            <Row>
+                <Button waves="light" className="waves-effect waves-light btn signin-button" id="signup_button" onClick={this.setSignup}>Register</Button>
+                <Link to="/login" className="waves-effect waves-light btn signin-button">Signin</Link>
+            </Row>
         </div>
       </div>
     );
@@ -171,4 +122,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

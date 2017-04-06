@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { Router, Route, browserHistory, hashHistory, Link } from 'react-router';
 import { connect } from 'react-redux';
+import UserProfile from './userProfile.jsx';
 
 class Header extends Component {
   constructor(props) {
@@ -9,39 +11,46 @@ class Header extends Component {
       userData: {}
     };
     this.signup = this.signup.bind(this);
+    this.getUser = this.getUser.bind(this);
   }
   componentWillMount() {
-    const userData = JSON.parse(sessionStorage.getItem('userData'));
-    this.setState({
-      userData
-    });
+    this.getUser();
   }
   signup(e) {
     e.preventDefault();
     $('#signup_button').trigger('click');
   }
+  getUser() {
+    const userData = (sessionStorage.getItem('userData') !== 'undefined')
+      ? JSON.parse(sessionStorage.getItem('userData'))
+      : browserHistory.push('login');
+    this.setState({
+      userData
+    });
+  }
   logout() {
     localStorage.removeItem('token');
     sessionStorage.removeItem('userData');
-    window.location.reload();
+    browserHistory.push('login');
   }
   render() {
-    const loginLogoutButton = localStorage.getItem('token')
+    const loggedIn = localStorage.getItem('token');
+    const loginLogoutButton = (loggedIn) 
       ? <a onClick={this.logout}>Logout</a>
       : <a onClick={this.signup}>Signup</a>;
+      
     let dynamicNav = null;
-    if (true) {
+    if (loggedIn) {
       dynamicNav = (
         <ul id="nav-mobile" className="right hide-on-med-and-down">
+          <li><a data-activates="slide-out-edit" className="user_profile_tab">
+            <i className="small material-icons">mode_edit</i></a></li>
           {(this.state.userData) ?
             <li>
-              <a href="!#">Welcome {this.state.userData.fullname}</a>
+              <a data-activates="slide-out" className="user_profile_tab">{this.state.userData.fullname}</a>
             </li>
           : null
         }
-          <li>
-            <a href="!#">My documents</a>
-          </li>
           <li>
             {loginLogoutButton}
           </li>
@@ -50,18 +59,23 @@ class Header extends Component {
       dynamicNav = (
         <ul id="nav-mobile" className="right hide-on-med-and-down">
           <li>
-            <a onClick={this.signup}> Signup </a>
+            <Link className="" to="/login">Signup</Link>
           </li>
         </ul>);
     }
-
+    const profileSideBar = (this.state.userData && this.state.userData.fullname)
+        ? <UserProfile userData={this.state.userData} logout={this.logout} getUser={this.getUser} />
+        : null;
     return (
-      <nav className="d-header">
-        <div className="nav-wrapper teal">
-          <a href="!#" className="brand-logo site-title">MarkyDoc</a>
-          {dynamicNav}
-        </div>
-      </nav>
+      <div>
+        {profileSideBar}
+        <nav className="d-header">
+          <div className="nav-wrapper teal">
+            <a className="brand-logo site-title">MarkyDoc</a>
+            {dynamicNav}
+          </div>
+        </nav>
+      </div>
     );
   }
 }

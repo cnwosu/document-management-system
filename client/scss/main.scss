@@ -15,8 +15,16 @@
 .login-title {
     font-size:25px;
     color: #777;
-    margin: 30px 20px;
+    margin-top: 130px !important;
+    margin: 30px 50px;
     text-align: center;
+}
+
+.login-button {
+    margin-right: 15px;
+}
+.signin-button {
+    margin-left: 15px;
 }
 
 .add-document {
@@ -39,4 +47,14 @@
 
 .search-filter {
     margin: 20px;
+}
+
+.pagination {
+    float: right;
+    margin-top: 10px;
+    margin-right: 40px;
+}
+
+.collapsible-popout {
+    margin-top: 50px !important;
 }

@@ -95,8 +95,10 @@ class usersController {
         user.password = req.body.password;
         user.password_confirmation = req.body.password_confirmation;
         user.password_digest = password;
-        user.save().then(() => {
-          res.status(200).json({ message: 'User details Updated' });
+        user.save().then((userData) => {
+          const tokenData = { userId: userData.id, email: userData.email, roleId: userData.roleId };
+          const token = jsonwebtoken.sign(tokenData, process.env.SECRET);
+          res.status(200).json({ message: 'User details Updated', userData, token });
         }).catch((err) => {
           res.status(500).json({ error: err.message });
         });

@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import Header from '../components/header.jsx';
 import Footer from '../components/footer.jsx';
 import Login from '../components/login.jsx';
-import HomePage from '../components/home.jsx';
 // import actionTypes from '../actions/actionTypes';
 import rootReducer from '../reducers';
 
-class AppComponent extends Component {
+class LoginComponent extends Component {
   constructor(props) {
     super(props);
     const isLoggedIn = false;
@@ -21,17 +20,14 @@ class AppComponent extends Component {
     this.setState({
       isLoggedIn: loginState
     });
+
     this.props.updateUser(loginState);
   }
   render() {
     return (
       <div>
         <Header />
-        {
-            (this.state.isLoggedIn)
-                ? <HomePage />
-                : <Login />
-        }
+        <Login />
         <Footer />
       </div>
     );
@@ -50,8 +46,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         isLoggedIn
       };
       dispatch(rootReducer(currentUser));
+      // window.location.href = `${window.location}home`;
     }
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);

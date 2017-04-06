@@ -40,10 +40,7 @@ class documentController {
   }
 
   static getDocuments(req, res) {
-    let queryParams = {
-      limit: 10,
-      offset: 0,
-    };
+    let queryParams = {};
     if (req.query.limit && req.query.offset) {
       queryParams = {
         limit: req.query.limit,
@@ -137,7 +134,7 @@ class documentController {
       return res.status(400).json({ error: 'Provide a valid query' });
     }
     const searchTitle = (req.query.title) ? req.query.title : null;
-    const searchAccess = (req.query.access) ? req.query.access : 'public';
+    // const searchAccess = (req.query.access) ? req.query.access : 'public';
     const searchRoleId = (req.query.ownerRoleId) ? req.query.ownerRoleId : 0;
     const limit = (req.query.limit) ? req.query.limit : 10;
     const query = {
@@ -147,7 +144,7 @@ class documentController {
             $like: `%${searchTitle}%`
           },
           ownerRoleId: searchRoleId,
-          access: searchAccess
+       //    access: searchAccess
         }
       },
       limit
