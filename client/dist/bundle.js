@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ed8ea541524349d0c9d4"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "e11dd2e2f82fba6172e2"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -11256,22 +11256,28 @@ var Header = function (_Component) {
       userData: {}
     };
     _this.signup = _this.signup.bind(_this);
+    _this.getUser = _this.getUser.bind(_this);
     return _this;
   }
 
   _createClass(Header, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      var userData = sessionStorage.getItem('userData') !== 'undefined' ? JSON.parse(sessionStorage.getItem('userData')) : _reactRouter.browserHistory.push('login');
-      this.setState({
-        userData: userData
-      });
+      this.getUser();
     }
   }, {
     key: 'signup',
     value: function signup(e) {
       e.preventDefault();
       $('#signup_button').trigger('click');
+    }
+  }, {
+    key: 'getUser',
+    value: function getUser() {
+      var userData = sessionStorage.getItem('userData') !== 'undefined' ? JSON.parse(sessionStorage.getItem('userData')) : _reactRouter.browserHistory.push('login');
+      this.setState({
+        userData: userData
+      });
     }
   }, {
     key: 'logout',
@@ -11342,7 +11348,7 @@ var Header = function (_Component) {
           )
         );
       }
-      var profileSideBar = this.state.userData && this.state.userData.fullname ? _react2.default.createElement(_userProfile2.default, { userData: this.state.userData, logout: this.logout }) : null;
+      var profileSideBar = this.state.userData && this.state.userData.fullname ? _react2.default.createElement(_userProfile2.default, { userData: this.state.userData, logout: this.logout, getUser: this.getUser }) : null;
       return _react2.default.createElement(
         'div',
         null,
@@ -15090,6 +15096,7 @@ var HomePage = function (_Component) {
       $('#modal2').modal();
       $('#modal3').modal();
       $('.user_profile_tab').sideNav({ edge: 'right' });
+      $('.all_user_profile_tab').sideNav({ edge: 'right' });
 
       var textareaStyle = {
         position: 'relative',
@@ -32832,16 +32839,42 @@ var UserProfile = function (_Component) {
 
     _this.state = {
       user: {},
-      successMsg: ''
+      successMsg: '',
+      allUsers: []
     };
     _this.updateUser = _this.updateUser.bind(_this);
     return _this;
   }
 
   _createClass(UserProfile, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      var _this2 = this;
+
+      // Get all users if current user is an admin
+      if (this.props.userData.roleId === 1) {
+        var url = '/api/users';
+        var token = localStorage.getItem('token');
+        var options = {
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            Authorization: token
+          }
+        };
+        fetch(url, options).then(function (data) {
+          return data.json();
+        }).then(function (res) {
+          _this2.setState({
+            allUsers: res.users
+          });
+        });
+      }
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.props.userData) {
         var url = '/api/users/' + this.props.userData.userId;
@@ -32856,7 +32889,7 @@ var UserProfile = function (_Component) {
         fetch(url, options).then(function (data) {
           return data.json();
         }).then(function (res) {
-          _this2.setState({
+          _this3.setState({
             user: res.user
           });
         });
@@ -32865,7 +32898,7 @@ var UserProfile = function (_Component) {
   }, {
     key: 'updateUser',
     value: function updateUser(e) {
-      var _this3 = this;
+      var _this4 = this;
 
       var token = localStorage.getItem('token');
       var email = document.getElementById('edit-email').value;
@@ -32889,25 +32922,56 @@ var UserProfile = function (_Component) {
       fetch(url, options).then(function (data) {
         return data.json();
       }).then(function (res) {
-        console.log(res);
         var userData = {
-          fullname: res.user.fullname,
-          roleId: res.user.roleId,
-          userId: res.user.id
+          fullname: res.userData.fullname,
+          roleId: res.userData.roleId,
+          userId: res.userData.id
         };
         localStorage.setItem('token', res.token);
-        sessionStorage.setItem('userData', JSON.stringify(res.user));
-        _this3.setState({
+        sessionStorage.setItem('userData', JSON.stringify(userData));
+        _this4.setState({
           user: userData,
           successMsg: 'Update Successful!'
         });
       });
+      this.props.getUser();
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
+      var allUsers = this.state.allUsers.length > 0 ? this.state.allUsers.map(function (user) {
+        return _react2.default.createElement(
+          'li',
+          { key: user.id },
+          _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement('hr', null),
+            _react2.default.createElement(
+              'a',
+              null,
+              _react2.default.createElement('i', { className: 'small material-icons' }),
+              _react2.default.createElement(
+                'span',
+                { className: ' email' },
+                user.fullname
+              ),
+              _react2.default.createElement(
+                'i',
+                { className: 'small material-icons right' },
+                'delete'
+              ),
+              _react2.default.createElement(
+                'i',
+                { className: 'small material-icons right' },
+                'mode_edit'
+              )
+            )
+          )
+        );
+      }) : null;
       return _react2.default.createElement(
         'div',
         null,
@@ -32964,13 +33028,15 @@ var UserProfile = function (_Component) {
             null,
             _react2.default.createElement(
               'a',
-              { className: 'waves-effect' },
+              { className: 'all_user_profile_tab waves-effect', onClick: function onClick() {
+                  $('.slide-out').sideNav('hide');
+                }, 'data-activates': 'slide-out-all-users' },
               _react2.default.createElement(
                 'i',
                 { className: 'small material-icons' },
                 'supervisor_account'
               ),
-              ' View All Users'
+              'View All Users'
             )
           ) : null,
           _react2.default.createElement(
@@ -33056,7 +33122,7 @@ var UserProfile = function (_Component) {
           _react2.default.createElement(
             'li',
             { onClick: function onClick() {
-                _this4.updateUser();
+                _this5.updateUser();
               } },
             _react2.default.createElement(
               'a',
@@ -33084,6 +33150,41 @@ var UserProfile = function (_Component) {
               ' Logout'
             )
           )
+        ),
+        _react2.default.createElement(
+          'ul',
+          { id: 'slide-out-all-users', className: 'side-nav left' },
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              'div',
+              { className: 'userView' },
+              _react2.default.createElement(
+                'a',
+                null,
+                _react2.default.createElement(
+                  'i',
+                  { className: 'large material-icons' },
+                  'supervisor_account'
+                )
+              ),
+              _react2.default.createElement(
+                'a',
+                null,
+                _react2.default.createElement(
+                  'span',
+                  { className: 'name' },
+                  _react2.default.createElement(
+                    'h5',
+                    null,
+                    'All Users'
+                  )
+                )
+              )
+            )
+          ),
+          allUsers
         )
       );
     }
