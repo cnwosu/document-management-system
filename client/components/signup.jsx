@@ -46,7 +46,7 @@ class Signup extends Component {
     // specify default roleId of 2 for all users by default
     const roleId = 2;
 
-    const url = `${config.api}/users`;
+    const url = `/api/users`;
     let query = `email=${email}&password=${password}&username=${username}`;
     query += `&fullname=${fullname}&password_confirmation=${passwordConfirmation}&roleId=${roleId}`;
     const options = {

@@ -163,7 +163,7 @@ class HomePage extends Component {
       },
       body: `title=${title}&content=${content}&access=${access}&userId=${userId}`
     };
-    const url = `${config.api}/documents`;
+    const url = `/api/documents`;
     fetch(url, options).then(data => data.json())
       .then((res) => {
         if (res && res.id) {

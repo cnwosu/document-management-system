@@ -58,7 +58,7 @@ export default class UserProfile extends Component {
     const username = document.getElementById('edit-username').value;
     const password = document.getElementById('edit-password').value;
     const confirmPassword = document.getElementById('edit-confirm-password').value;
-    const url = `${config.api}/users/${this.state.user.id}`;
+    const url = `/api/users/${this.state.user.id}`;
 
     let query = `email=${email}&password=${password}&username=${username}`;
     query += `&fullname=${fullname}&password_confirmation=${confirmPassword}`;

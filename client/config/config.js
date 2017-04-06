@@ -1,5 +1,7 @@
+
 const config = {
-    api: 'http://localhost:3000/api'
+  page: 'http://localhost:3000/api',
+  api: `${location}/api`
 };
 
 export default config;
