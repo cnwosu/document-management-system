@@ -1,0 +1,14 @@
+{
+  "reporter": [
+    "lcov",
+    "text-summary"
+  ],
+    "require": [
+        "babel-register"
+    ],
+  "exclude": [
+      "**/*.spec.js",
+      "client"
+  ],
+  "include": ["server/controller/*.js"]
+}

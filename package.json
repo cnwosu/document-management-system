@@ -4,10 +4,12 @@
   "description": "a document management system",
   "main": "server.js",
   "scripts": {
-    "test": "npm run seed && NODE_ENV=test mocha --compilers js:babel-core/register server/test/**/*.spec.js",
+    "cover": "npm run seed && NODE_ENV=test mocha --compilers js:babel-core/register server/test/**/*.spec.js",
     "start": "webpack && babel-node server.js --presets es2015,stage-2",
     "seed": "NODE_ENV=test node server/seeders/seeders",
-    "coverage": "npm run seed && ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha server/test/**/*.spec.js -- --require babel-register",
+    "test": "nyc --require babel-register --reporter=lcov --reporter=text-lcov npm run cover && npm run report",
+    "report": "nyc report",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "e2e": "protractor ./client/test/e2e/config.js",
     "e2e-driver": "webdriver-manager start"
   },
@@ -92,5 +94,6 @@
     "supertest": "^3.0.0"
   },
   "devDependencies": {
+    "nyc": "^10.2.0"
   }
 }

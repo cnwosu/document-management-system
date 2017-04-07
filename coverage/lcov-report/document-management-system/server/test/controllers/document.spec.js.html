@@ -1,0 +1,1172 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for document-management-system/server/test/controllers/document.spec.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../../index.html">All files</a> / <a href="index.html">document-management-system/server/test/controllers</a> document.spec.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">34.65% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>44/127</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">8.33% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/60</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">34.65% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>44/127</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const chai = require('chai');
+&nbsp;
+const app = require('../../../server');
+&nbsp;
+const request = require('supertest')(app);
+&nbsp;
+const expect = chai.expect;
+&nbsp;
+describe('Document', () =&gt; {
+  let adminToken;
+  let regularToken;
+  const newDocument = {
+    title: 'My document',
+    content: 'This is a cool document',
+    userId: 1,
+    access: 'private'
+  };
+  const newPublicDocument = {
+    title: 'My public document',
+    content: 'This is a public document',
+    userId: 1,
+    access: 'public'
+  };
+  let documentCreated;
+  before((done) =&gt; {
+    request.post('/api/users/login')
+      .send({ email: 'admin@dms.com', password: 'admin' })
+        .then((res) =&gt; {
+          adminToken = res.body.jwt;
+          request.post('/api/users/login')
+            .send({ email: 'regular@dms.com', password: 'regular' })
+              .then((response) =&gt; {
+                regularToken = response.body.jwt;
+                done();
+              });
+        });
+  });
+&nbsp;
+  it('should be able to create document', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.post('/api/documents')</span>
+      .set('authorization', adminToken)
+      .send(newDocument)
+      .expect(201)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        documentCreated = res.body;</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should be able to get own documents', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.get(`/api/documents/${documentCreated.id}`)</span>
+      .set('authorization', adminToken)
+      .expect(200)
+      .then(<span class="fstat-no" title="function not covered" >() =&gt; </span>{
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should not be able to get documents not created by user', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.get(`/api/documents/${documentCreated.id}`)</span>
+      .set('authorization', regularToken)
+      .expect(401)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('User cannot access document');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should ensure document has property set to public by default', <span class="fstat-no" title="function not covered" >() =&gt; </span>{
+<span class="cstat-no" title="statement not covered" >    request.post('/api/documents')</span>
+      .set('authorization', regularToken)
+      .send({
+        title: 'My default document',
+        content: 'This is a default document',
+        userId: 2
+      })
+      .expect(201)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.access).to.equal('public');</span>
+      });
+  });
+&nbsp;
+  it('should ensure only the creator can access private document', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.get(`/api/documents/${documentCreated.id}`)</span>
+      .set('authorization', adminToken)
+      .expect(200)
+      .then(<span class="fstat-no" title="function not covered" >() =&gt; </span>{
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should ensure document created has published date defined', <span class="fstat-no" title="function not covered" >() =&gt; </span>{
+<span class="cstat-no" title="statement not covered" >    expect(typeof documentCreated.createdAt).to.not.equal('undefined');</span>
+  });
+&nbsp;
+  it('should get all documents', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.get('/api/documents')</span>
+      .set('authorization', adminToken)
+      .expect(200)
+      .then(<span class="fstat-no" title="function not covered" >() =&gt; </span>{
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should get limited documents', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+    c</span>onst limit = <span class="cstat-no" title="statement not covered" >2,
+      offset = <span class="cstat-no" title="statement not covered" >0;</span>
+<span class="cstat-no" title="statement not covered" >    request.get(`/api/documents?limit=${limit}&amp;offset=${offset}`)</span>
+      .set('authorization', adminToken)
+      .expect(200)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.length).to.equal(limit);</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should be able to access other user document marked as public', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.post('/api/documents')</span>
+      .set('authorization', adminToken)
+      .send(newPublicDocument)
+      .expect(201)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+        c</span>onst publicDocument = <span class="cstat-no" title="statement not covered" >res.body;
+<span class="cstat-no" title="statement not covered" >        request.get(`/api/documents/${publicDocument.id}`)</span>
+        .set('authorization', regularToken)
+        .expect(200)
+        .then(<span class="fstat-no" title="function not covered" >() =&gt; </span>{
+<span class="cstat-no" title="statement not covered" >          done();</span>
+        });
+      });
+  });
+&nbsp;
+  it('should ensure documents are arranged in order of published date', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.get('/api/documents')</span>
+      .set('authorization', adminToken)
+      .expect(200)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body[1].createdAt).to.not.be.above(res.body[0].createdAt);</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should be able to set offset and limit', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+    c</span>onst limit = <span class="cstat-no" title="statement not covered" >2,
+      offset = <span class="cstat-no" title="statement not covered" >1;</span>
+<span class="cstat-no" title="statement not covered" >    request.get(`/api/documents?limit=${limit}&amp;offset=${offset}`)</span>
+      .set('authorization', adminToken)
+      .expect(200)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.length).to.equal(limit);</span>
+<span class="cstat-no" title="statement not covered" >        expect(res.body[0].id).to.equal(2);</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should not view document not created by user and not set to public', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.get(`/api/documents/${documentCreated.id}`)</span>
+      .set('authorization', regularToken)
+      .expect(401)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('User cannot access document');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should be able to update documents if requested by Admin', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.put('/api/documents/1')</span>
+      .set('authorization', adminToken)
+      .send({
+        title: 'My updated document',
+        content: 'Dynamic document',
+        userId: 1,
+        access: 'private'
+      })
+      .expect(200)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('Document details Updated');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should not be able to update documents if not requested by Admin', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.put('/api/documents/1')</span>
+      .set('authorization', regularToken)
+      .send({
+        title: 'My updated document',
+        content: 'Dynamic document',
+        userId: 2,
+        access: 'private'
+      })
+      .expect(401)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('User Unauthorized');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should be able to update documents if created by the user', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.post('/api/documents')</span>
+      .set('authorization', regularToken)
+      .send({
+        title: 'My new document',
+        content: 'Dynamic document',
+        userId: 2,
+        access: 'public'
+      })
+      .expect(201)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        request.put(`/api/documents/${res.body.id}`)</span>
+            .set('authorization', regularToken)
+            .send({
+              title: 'My updated document',
+              content: 'Dynamic document',
+              userId: 2,
+              access: 'private'
+            })
+            .expect(200)
+            .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >              expect(res.body.message).to.equal('Document details Updated');</span>
+<span class="cstat-no" title="statement not covered" >              done();</span>
+            });
+      });
+  });
+&nbsp;
+  it('should not be able to update documents if not created by the user', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.put(`/api/documents/${documentCreated.id}`)</span>
+      .set('authorization', regularToken)
+      .send({
+        title: 'My updated document',
+        content: 'Dynamic document',
+        userId: 2,
+        access: 'private'
+      })
+      .expect(401)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('User Unauthorized');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should not be able to update document with invalid access type', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.put(`/api/documents/${documentCreated.id}`)</span>
+      .set('authorization', adminToken)
+      .send({
+        access: 'access',
+      })
+      .expect(400)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('Invalid request parameters');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should not create document without title', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.post('/api/documents/')</span>
+      .set('authorization', adminToken)
+      .send({
+        content: 'A document with no title',
+      })
+      .expect(400)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('Invalid request');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should not create document without content', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.post('/api/documents/')</span>
+      .set('authorization', adminToken)
+      .send({
+        title: 'Another invalid document',
+      })
+      .expect(400)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('Invalid request');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should not create document with invalid access', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.post('/api/documents/')</span>
+      .set('Accept', 'application/json')
+      .set('authorization', adminToken)
+      .send({
+        title: 'A newer document',
+        content: 'This document has invalid access',
+        access: 'asdf',
+      })
+      .expect(400)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('Invalid request');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should not create document that already exists', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.post('/api/documents/')</span>
+      .set('authorization', adminToken)
+      .send(newDocument)
+      .expect(409)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('Document already exists');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should not be able to delete others document', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.delete(`/api/documents/${documentCreated.id}`)</span>
+      .set('authorization', regularToken)
+      .expect(401)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('User Unauthorized');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should be able to delete a document if user is admin', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.delete(`/api/documents/${documentCreated.id}`)</span>
+      .set('authorization', adminToken)
+      .expect(200)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('Document successfully deleted');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  it('should return 404 on non-existent document request', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >    request.get('/api/documents/9089808')</span>
+      .set('authorization', adminToken)
+      .expect(404)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.message).to.equal('Document does not exist');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+  });
+&nbsp;
+  describe('Search', () =&gt; {
+    it('should search documents specified by a given title', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >      request.get('/api/search/documents?title=updated')</span>
+      .set('authorization', adminToken)
+      .expect(200)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.length).to.not.equal(0);</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+    });
+&nbsp;
+    it('should get documents limited by number and published on a certain date', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+      c</span>onst limit = <span class="cstat-no" title="statement not covered" >1;
+<span class="cstat-no" title="statement not covered" >      request.get(`/api/search/documents?title=at&amp;limit=${limit}`)</span>
+      .set('authorization', adminToken)
+      .expect(200)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.length).to.equal(limit);</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+    });
+&nbsp;
+    it('should get documents created by specified role', <span class="fstat-no" title="function not covered" >(</span>done) =&gt; {
+<span class="cstat-no" title="statement not covered" >      request.get('/api/documents?title=updated&amp;ownerRoleId=2')</span>
+      .set('authorization', adminToken)
+      .expect(200)
+      .then(<span class="fstat-no" title="function not covered" >(</span>res) =&gt; {
+<span class="cstat-no" title="statement not covered" >        expect(res.body.length).to.not.equal(0);</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
+      });
+    });
+  });
+});
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Apr 07 2017 06:13:28 GMT+0100 (WAT)
+</div>
+</div>
+<script src="../../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../../sorter.js"></script>
+</body>
+</html>
