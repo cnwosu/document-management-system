@@ -143,7 +143,6 @@ class Login extends Component {
               <Input id="user-email" type="email" label="Email" s={12} validate />
               <Input id="user-password" type="password" label="password" s={12} />
             </Row>
-  
           <Row>
             <Col s={6}>
             <Button id="login-button" className="login-button" waves="light" onClick={this.validateUser}>Signin</Button>

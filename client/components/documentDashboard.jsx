@@ -17,7 +17,7 @@ export default class DocumentDashboard extends Component {
     return (
       <div className="col s12">
           <div className="col s2">
-            <div className="add-document">
+            <div id="add-document" className="add-document">
               <a className="text-center" id="add-document" href="#modal1">
                 <i className="medium material-icons">library_add</i>
                 <br />
@@ -26,7 +26,7 @@ export default class DocumentDashboard extends Component {
             </div>
           </div>
           <div className="col s2">
-            <div className="add-document">
+            <div id="my-document" className="add-document">
               <a className="text-center" id="my-document" href="" onClick={this.props.getUserDocuments}>
                 <i className="medium material-icons">list</i>
                 <br />
@@ -35,7 +35,7 @@ export default class DocumentDashboard extends Component {
             </div>
           </div>
           <div className="col s2">
-            <div className="add-document">
+            <div id="all-documents" className="add-document">
               <a className="text-center" id="all-documents" style={allDocumentStyle} onClick={this.props.getDocuments}>
                 <i className="medium material-icons">library_books</i>
                 <br />

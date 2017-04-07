@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f866d16bdd556f43171c"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "bafd925a27e237541868"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -9936,10 +9936,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+
 var config = {
-    api: 'http://localhost:3000/api'
+  page: 'http://localhost:3000/api',
+  api: location + '/api'
 };
 
 exports.default = config;
@@ -11292,7 +11294,7 @@ var Header = function (_Component) {
       var loggedIn = localStorage.getItem('token');
       var loginLogoutButton = loggedIn ? _react2.default.createElement(
         'a',
-        { onClick: this.logout },
+        { id: 'logout-button', onClick: this.logout },
         'Logout'
       ) : _react2.default.createElement(
         'a',
@@ -14926,7 +14928,7 @@ var HomePage = function (_Component) {
         },
         body: 'title=' + title + '&content=' + content + '&access=' + access + '&userId=' + userId
       };
-      var url = _config2.default.api + '/documents';
+      var url = '/api/documents';
       fetch(url, options).then(function (data) {
         return data.json();
       }).then(function (res) {
@@ -15095,8 +15097,21 @@ var HomePage = function (_Component) {
       $('#modal1').modal();
       $('#modal2').modal();
       $('#modal3').modal();
-      $('.user_profile_tab').sideNav({ edge: 'right' });
-      $('.all_user_profile_tab').sideNav({ edge: 'right' });
+      $('.user_profile_tab').sideNav({
+        edge: 'right',
+        closeOnClick: true,
+        menuWidth: 450
+      });
+      $('.all_user_profile_tab').sideNav({
+        edge: 'right',
+        closeOnClick: true,
+        menuWidth: 450
+      });
+      $('.all_user_profile_edit_tab').sideNav({
+        edge: 'right',
+        closeOnClick: true,
+        menuWidth: 450
+      });
 
       var textareaStyle = {
         position: 'relative',
@@ -15117,7 +15132,7 @@ var HomePage = function (_Component) {
       var document = this.displayDocuments(this.state.paginated || this.state.allDocuments);
       return _react2.default.createElement(
         'div',
-        { className: 'row' },
+        { id: 'all-documents', className: 'row' },
         _react2.default.createElement(_documentDashboard2.default, { searchDocument: this.searchDocument, loadTitles: this.loadTitles, getDocuments: this.getDocuments, allTitles: this.state.allTitles, getUserDocuments: this.getUserDocuments }),
         _react2.default.createElement('hr', null),
         _react2.default.createElement(_saveDocument2.default, { createDoc: this.createDoc, clearDoc: this.clearDoc }),
@@ -15234,7 +15249,7 @@ var Login = function (_Component) {
       if (password.trim().length < 1) {
         errors.push('Password is required');
       }
-      var url = _config2.default.api + '/users/login';
+      var url = '/api/users/login';
       var options = {
         method: 'POST',
         headers: {
@@ -15290,7 +15305,7 @@ var Login = function (_Component) {
       // specify default roleId of 2 for all users by default
       var roleId = 2;
 
-      var url = _config2.default.api + '/users';
+      var url = '/api/users';
       var query = 'email=' + email + '&password=' + password + '&username=' + username;
       query += '&fullname=' + fullname + '&password_confirmation=' + passwordConfirmation + '&roleId=' + roleId;
       var options = {
@@ -32264,7 +32279,7 @@ var DocumentDashboard = function (_Component) {
           { className: 'col s2' },
           _react2.default.createElement(
             'div',
-            { className: 'add-document' },
+            { id: 'add-document', className: 'add-document' },
             _react2.default.createElement(
               'a',
               { className: 'text-center', id: 'add-document', href: '#modal1' },
@@ -32283,7 +32298,7 @@ var DocumentDashboard = function (_Component) {
           { className: 'col s2' },
           _react2.default.createElement(
             'div',
-            { className: 'add-document' },
+            { id: 'my-document', className: 'add-document' },
             _react2.default.createElement(
               'a',
               { className: 'text-center', id: 'my-document', href: '', onClick: this.props.getUserDocuments },
@@ -32302,7 +32317,7 @@ var DocumentDashboard = function (_Component) {
           { className: 'col s2' },
           _react2.default.createElement(
             'div',
-            { className: 'add-document' },
+            { id: 'all-documents', className: 'add-document' },
             _react2.default.createElement(
               'a',
               { className: 'text-center', id: 'all-documents', style: allDocumentStyle, onClick: this.props.getDocuments },
@@ -32696,7 +32711,7 @@ var Signup = function (_Component) {
       // specify default roleId of 2 for all users by default
       var roleId = 2;
 
-      var url = _config2.default.api + '/users';
+      var url = '/api/users';
       var query = 'email=' + email + '&password=' + password + '&username=' + username;
       query += '&fullname=' + fullname + '&password_confirmation=' + passwordConfirmation + '&roleId=' + roleId;
       var options = {
@@ -32721,7 +32736,7 @@ var Signup = function (_Component) {
           _this2.setState({
             isLoggedIn: true
           });
-          // window.location.href = 'http://localhost:3000/home';
+          _reactRouter.browserHistory.push('/home');
         } else {
           // Login failed handle action
           _this2.setState({
@@ -32731,7 +32746,6 @@ var Signup = function (_Component) {
       }).catch(function (error) {
         console.log('err:', error);
       });
-      this.props.updateUser(this.state.isLoggedIn, 'SIGNUP_ACTION');
     }
   }, {
     key: 'render',
@@ -32761,7 +32775,10 @@ var Signup = function (_Component) {
             null,
             _react2.default.createElement(
               _reactMaterialize.Button,
-              { waves: 'light', className: 'waves-effect waves-light btn signin-button', id: 'signup_button', onClick: this.setSignup },
+              { waves: 'light',
+                className: 'waves-effect waves-light btn signin-button',
+                id: 'signup_button',
+                onClick: this.registerUser },
               'Register'
             ),
             _react2.default.createElement(
@@ -32840,9 +32857,14 @@ var UserProfile = function (_Component) {
     _this.state = {
       user: {},
       successMsg: '',
-      allUsers: []
+      allUsers: [],
+      selectedUser: {},
+      selectedUserColor: 'green',
+      clickAction: null
     };
     _this.updateUser = _this.updateUser.bind(_this);
+    _this.editUser = _this.editUser.bind(_this);
+    _this.deleteUser = _this.deleteUser.bind(_this);
     return _this;
   }
 
@@ -32897,16 +32919,17 @@ var UserProfile = function (_Component) {
     }
   }, {
     key: 'updateUser',
-    value: function updateUser(e) {
+    value: function updateUser(user) {
       var _this4 = this;
 
+      var owner = user === 'currentUser';
       var token = localStorage.getItem('token');
-      var email = document.getElementById('edit-email').value;
-      var fullname = document.getElementById('edit-fullname').value;
-      var username = document.getElementById('edit-username').value;
-      var password = document.getElementById('edit-password').value;
-      var confirmPassword = document.getElementById('edit-confirm-password').value;
-      var url = _config2.default.api + '/users/' + this.state.user.id;
+      var email = owner ? document.getElementById('edit-email').value : document.getElementById('edit-other-email').value;
+      var fullname = owner ? document.getElementById('edit-fullname').value : document.getElementById('edit-other-fullname').value;
+      var username = owner ? document.getElementById('edit-username').value : document.getElementById('edit-other-username').value;
+      var password = owner ? document.getElementById('edit-password').value : document.getElementById('edit-other-password').value;
+      var confirmPassword = owner ? document.getElementById('edit-other-confirm-password').value : document.getElementById('edit-other-confirm-password').value;
+      var url = owner ? '/api/users/' + this.state.user.id : '/api/users/' + this.state.selectedUser.id;
 
       var query = 'email=' + email + '&password=' + password + '&username=' + username;
       query += '&fullname=' + fullname + '&password_confirmation=' + confirmPassword;
@@ -32922,25 +32945,79 @@ var UserProfile = function (_Component) {
       fetch(url, options).then(function (data) {
         return data.json();
       }).then(function (res) {
-        var userData = {
-          fullname: res.userData.fullname,
-          roleId: res.userData.roleId,
-          userId: res.userData.id
-        };
-        localStorage.setItem('token', res.token);
-        sessionStorage.setItem('userData', JSON.stringify(userData));
-        _this4.setState({
-          user: userData,
-          successMsg: 'Update Successful!'
-        });
+        if (owner) {
+          var userData = {
+            fullname: res.userData.fullname,
+            roleId: res.userData.roleId,
+            userId: res.userData.id
+          };
+          localStorage.setItem('token', res.token);
+          sessionStorage.setItem('userData', JSON.stringify(userData));
+          _this4.setState({
+            user: userData,
+            successMsg: 'Update Successful!'
+          });
+        }
       });
       this.props.getUser();
+    }
+  }, {
+    key: 'editUser',
+    value: function editUser(user) {
+      var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'edit';
+
+      if (action === 'delete') {
+        this.setState({
+          clickAction: 'delete'
+        });
+      } else {
+        this.setState({
+          clickAction: null
+        });
+      }
+      this.setState({
+        selectedUser: user,
+        selectedUserColor: action === 'delete' ? 'red' : 'green'
+      });
+    }
+  }, {
+    key: 'deleteUser',
+    value: function deleteUser(type) {
+      if (type !== 'cancel') {
+        var token = localStorage.getItem('token');
+        var url = '/api/users/' + this.state.selectedUser.id;
+        var options = {
+          method: 'DELETE',
+          headers: {
+            'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            Authorization: token
+          }
+        };
+        fetch(url, options).then(function (data) {
+          console.log(data);
+        });
+      } else {
+        this.setState({
+          selectedUser: {},
+          clickAction: null
+        });
+      }
     }
   }, {
     key: 'render',
     value: function render() {
       var _this5 = this;
 
+      var boldStyle = {
+        color: this.state.selectedUserColor,
+        fontSize: '17px',
+        fontWeight: 'bold',
+        cursor: 'pointer',
+        paddingLeft: '15px'
+      };
+      var iconStyle = {
+        cursor: 'pointer'
+      };
       var allUsers = this.state.allUsers.length > 0 ? this.state.allUsers.map(function (user) {
         return _react2.default.createElement(
           'li',
@@ -32950,22 +33027,30 @@ var UserProfile = function (_Component) {
             null,
             _react2.default.createElement('hr', null),
             _react2.default.createElement(
-              'a',
+              'div',
               null,
               _react2.default.createElement('i', { className: 'small material-icons' }),
               _react2.default.createElement(
                 'span',
-                { className: ' email' },
+                {
+                  style: _this5.state.selectedUser.id === user.id ? boldStyle : { paddingLeft: '15px' },
+                  'data-activates': 'slide-out-edit-user',
+                  className: 'all_user_profile_edit_tab'
+                },
                 user.fullname
               ),
               _react2.default.createElement(
                 'i',
-                { className: 'small material-icons right' },
+                { style: iconStyle, onClick: function onClick() {
+                    _this5.editUser(user, 'delete');
+                  }, className: 'small material-icons right' },
                 'delete'
               ),
               _react2.default.createElement(
                 'i',
-                { className: 'small material-icons right' },
+                { style: iconStyle, onClick: function onClick() {
+                    _this5.editUser(user, 'edit');
+                  }, className: 'small material-icons right' },
                 'mode_edit'
               )
             )
@@ -33028,9 +33113,7 @@ var UserProfile = function (_Component) {
             null,
             _react2.default.createElement(
               'a',
-              { className: 'all_user_profile_tab waves-effect', onClick: function onClick() {
-                  $('.slide-out').sideNav('hide');
-                }, 'data-activates': 'slide-out-all-users' },
+              { className: 'all_user_profile_tab waves-effect', 'data-activates': 'slide-out-all-users' },
               _react2.default.createElement(
                 'i',
                 { className: 'small material-icons' },
@@ -33044,20 +33127,6 @@ var UserProfile = function (_Component) {
             null,
             _react2.default.createElement(
               'a',
-              { className: 'waves-effect', href: '#!' },
-              _react2.default.createElement(
-                'i',
-                { className: 'small material-icons' },
-                'mode_edit'
-              ),
-              'Update profile'
-            )
-          ),
-          _react2.default.createElement(
-            'li',
-            null,
-            _react2.default.createElement(
-              'a',
               { className: 'waves-effect', onClick: this.props.logout },
               ' ',
               _react2.default.createElement(
@@ -33066,6 +33135,25 @@ var UserProfile = function (_Component) {
                 'power_settings_new'
               ),
               ' Logout'
+            )
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement('div', { className: 'divider' })
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              'a',
+              { className: 'waves-effect' },
+              _react2.default.createElement(
+                'i',
+                { className: 'small material-icons' },
+                'reply'
+              ),
+              'Back'
             )
           )
         ),
@@ -33122,7 +33210,7 @@ var UserProfile = function (_Component) {
           _react2.default.createElement(
             'li',
             { onClick: function onClick() {
-                _this5.updateUser();
+                _this5.updateUser('currentUser');
               } },
             _react2.default.createElement(
               'a',
@@ -33133,6 +33221,20 @@ var UserProfile = function (_Component) {
                 'done_all'
               ),
               'Save'
+            )
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              'a',
+              { className: 'waves-effect' },
+              _react2.default.createElement(
+                'i',
+                { className: 'small material-icons' },
+                'reply'
+              ),
+              'Back'
             )
           ),
           _react2.default.createElement(
@@ -33184,7 +33286,164 @@ var UserProfile = function (_Component) {
               )
             )
           ),
-          allUsers
+          allUsers,
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement('div', { className: 'divider' })
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              'a',
+              { className: 'waves-effect' },
+              _react2.default.createElement(
+                'i',
+                { className: 'small material-icons' },
+                'reply'
+              ),
+              'Back'
+            )
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement('div', { className: 'divider' })
+          ),
+          this.state.clickAction !== null ? _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement('br', null),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              'h5',
+              null,
+              'Delete User?'
+            ),
+            _react2.default.createElement(
+              'li',
+              null,
+              _react2.default.createElement('div', { className: 'divider' })
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              'li',
+              null,
+              _react2.default.createElement(
+                'a',
+                { className: 'waves-effect right', onClick: function onClick() {
+                    _this5.deleteUser();
+                  } },
+                _react2.default.createElement(
+                  'i',
+                  { className: 'small material-icons' },
+                  'delete'
+                ),
+                ' Yes'
+              )
+            ),
+            _react2.default.createElement(
+              'li',
+              null,
+              _react2.default.createElement(
+                'a',
+                { className: 'waves-effect left', onClick: function onClick() {
+                    _this5.deleteUser('cancel');
+                  } },
+                ' ',
+                _react2.default.createElement(
+                  'i',
+                  { className: 'small material-icons' },
+                  'cancel'
+                ),
+                ' No'
+              )
+            )
+          ) : null
+        ),
+        _react2.default.createElement(
+          'ul',
+          { id: 'slide-out-edit-user', className: 'side-nav left' },
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              'div',
+              { className: 'userView' },
+              _react2.default.createElement(
+                'a',
+                null,
+                _react2.default.createElement(
+                  'i',
+                  { className: 'large material-icons' },
+                  'perm_identity'
+                )
+              ),
+              _react2.default.createElement(
+                'a',
+                null,
+                _react2.default.createElement(
+                  'span',
+                  { className: 'name' },
+                  'Edit User Profile'
+                )
+              ),
+              _react2.default.createElement(_reactMaterialize.Input, { id: 'edit-other-email', type: 'email', placeholder: this.state.selectedUser.email, s: 12, validate: true }),
+              _react2.default.createElement(_reactMaterialize.Input, { id: 'edit-other-fullname', type: 'text', placeholder: this.state.selectedUser.fullname, s: 12, validate: true }),
+              _react2.default.createElement(_reactMaterialize.Input, { id: 'edit-other-username', type: 'text', placeholder: this.state.selectedUser.username, s: 12, validate: true }),
+              _react2.default.createElement(_reactMaterialize.Input, { id: 'edit-other-password', type: 'password', placeholder: 'Password', s: 12, validate: true }),
+              _react2.default.createElement(_reactMaterialize.Input, { id: 'edit-other-confirm-password', type: 'password', placeholder: 'Confirm password', s: 12, validate: true })
+            )
+          ),
+          this.state.successMsg.length > 0 ? _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              'a',
+              null,
+              ' ',
+              this.state.successMsg,
+              ' '
+            )
+          ) : null,
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement('div', { className: 'divider' })
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(
+                'a',
+                { className: 'waves-effect right', onClick: function onClick() {
+                    _this5.updateUser('otherUser');
+                  } },
+                ' ',
+                _react2.default.createElement(
+                  'i',
+                  { className: 'small material-icons' },
+                  'done_all'
+                ),
+                ' Save'
+              ),
+              _react2.default.createElement(
+                'a',
+                { className: 'waves-effect left' },
+                ' ',
+                _react2.default.createElement(
+                  'i',
+                  { className: 'small material-icons' },
+                  'reply'
+                ),
+                ' Back'
+              )
+            )
+          )
         )
       );
     }

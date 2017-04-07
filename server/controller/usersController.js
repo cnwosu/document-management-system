@@ -20,7 +20,7 @@ class usersController {
   }
 
   static logout(req, res) {
-    return res.status(201).json({ message: "i'm going!" });
+    return res.status(201).json({ message: 'Logout successfull' });
   }
 
   static newUser(req, res) {
@@ -90,6 +90,7 @@ class usersController {
     User.findOne({ where: { id: req.params.id } }).then((user) => {
       const password = bcrypt.hashSync(req.body.password);
       if (user.email === req.token.email || req.token.roleId === 1) {
+        user.email = req.body.email;
         user.fullname = req.body.fullname;
         user.username = req.body.username;
         user.password = req.body.password;

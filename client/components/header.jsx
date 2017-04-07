@@ -36,7 +36,7 @@ class Header extends Component {
   render() {
     const loggedIn = localStorage.getItem('token');
     const loginLogoutButton = (loggedIn) 
-      ? <a onClick={this.logout}>Logout</a>
+      ? <a id="logout-button" onClick={this.logout}>Logout</a>
       : <a onClick={this.signup}>Signup</a>;
       
     let dynamicNav = null;
