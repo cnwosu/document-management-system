@@ -1,5 +1,5 @@
 describe('Home', () => {
-  before(() => {
+  beforeEach(() => {
     browser.get('/login');
   });
   after(() => {
@@ -29,19 +29,4 @@ describe('Home', () => {
         expect(result).to.be.true;
     });
   });
-
-//   it('should display add new document, my documents and all documents button on homepage', () => {
-//     const addDocument = element(by.id('add-documents'));
-//     const myDocument = element(by.id('my-document'));
-//     const allDocument = element(by.id('all-documents'));
-//     addDocuments.isPresent().then((result1) => {
-//         expect(result1).to.be.true;
-//     });
-//     myDocuments.isPresent().then((result2) => {
-//         expect(result2).to.be.true;
-//     });
-//     allDocuments.isPresent().then((result3) => {
-//         expect(result3).to.be.true;
-//     });
-//   });
 });
