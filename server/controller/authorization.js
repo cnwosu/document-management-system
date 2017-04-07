@@ -1,13 +1,17 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../models/index';
 
 require('dotenv').config();
 
 /**
- *
+ * AuthorizationController class: middleware
  */
-
 class AuthorizationController {
+  /**
+   * getToken method
+   * @param {request} request request object
+   * @param {response} response response
+   * @return {object} http response
+  */
   static getToken(request, response) {
     if (!request.headers.authorization) {
       return response.status(401).json({ message: 'User unauthorized' });
@@ -15,6 +19,13 @@ class AuthorizationController {
     return request.headers.authorization;
   }
 
+  /**
+   * isAuthorized method
+   * @param {request} req request object
+   * @param {response} res response
+   * @param {callback} next callback function
+   * @return {object} http response
+  */
   static isAuthorized(req, res, next) {
     if (!req.headers.authorization) {
       return res.status(401).json({ message: 'User unauthorized' });
@@ -34,6 +45,13 @@ class AuthorizationController {
     }
   }
 
+  /**
+   * isAdmin method
+   * @param {request} req request object
+   * @param {response} res response
+   * @param {callback} next callback function
+   * @return {object} http response
+  */
   static isAdmin(req, res, next) {
     const decodedToken = jwt.decode(AuthorizationController.getToken(req, res));
     req.token = decodedToken;

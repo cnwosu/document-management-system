@@ -47,8 +47,8 @@ export default class RoleController {
   }
 
 /**
- * get a role controller
- * @method getRole
+ * get roles
+ * @method getRoles
  * @param {object} req
  * @param {object} res
  * @return {object} HTTP response
