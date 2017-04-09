@@ -12,18 +12,16 @@ export default class UserProfile extends Component {
       allUsers: [],
       selectedUser: {},
       selectedUserColor: 'green',
-      clickAction: null
+      clickAction: null,
+      allUserRoles: []
     };
     this.updateUser = this.updateUser.bind(this);
     this.editUser = this.editUser.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
     this.getAllUsers = this.getAllUsers.bind(this);
+    this.getRoles = this.getRoles.bind(this);
   }
   componentWillMount() {
-    // Load users for admin
-    this.getAllUsers();
-  }
-  componentDidMount() {
     if (this.props.userData) {
       const url = `/api/users/${this.props.userData.userId}`;
       const token = localStorage.getItem('token');
@@ -39,8 +37,12 @@ export default class UserProfile extends Component {
         this.setState({
           user: res.user
         });
+        if (res.user.roleId === 1) {
+          this.getRoles();
+        }
       });
     }
+    this.getAllUsers();
   }
   getAllUsers() {
     this.setState({
@@ -65,6 +67,23 @@ export default class UserProfile extends Component {
       });
     }
   }
+  getRoles() {
+    const url = '/api/roles';
+    const token = localStorage.getItem('token');
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        Authorization: token
+      }
+    };
+    fetch(url, options).then(data => data.json())
+    .then((roles) => {
+      this.setState({
+        allUserRoles: roles
+      });
+    });
+  }
   updateUser(user) {
     const owner = (user === 'currentUser');
     const token = localStorage.getItem('token');
@@ -81,14 +100,20 @@ export default class UserProfile extends Component {
       ? document.getElementById('edit-password').value
       : document.getElementById('edit-other-password').value;
     const confirmPassword = (owner)
-      ? document.getElementById('edit-other-confirm-password').value
+      ? document.getElementById('edit-confirm-password').value
       : document.getElementById('edit-other-confirm-password').value;
+    const roleId = (!owner)
+      ? document.getElementById('edit-other-role').value
+      : null;
     const url = (owner)
       ? `/api/users/${this.state.user.id}`
       : `/api/users/${this.state.selectedUser.id}`;
 
     let query = `email=${email}&password=${password}&username=${username}`;
     query += `&fullname=${fullname}&password_confirmation=${confirmPassword}`;
+    if (!owner) {
+      query += `&roleId=${roleId}`;
+    }
     const options = {
       method: 'PUT',
       headers: {
@@ -144,7 +169,6 @@ export default class UserProfile extends Component {
       };
       fetch(url, options).then((data) => {
         this.getAllUsers();
-        console.log(data);
       });
     } else {
       this.setState({
@@ -164,6 +188,9 @@ export default class UserProfile extends Component {
     const iconStyle = {
       cursor: 'pointer'
     };
+      const userRoles = this.state.allUserRoles.map(role => (
+        <option key={role.id} value={role.id}>{role.title}</option>
+        ));
     const allUsers = (this.state.allUsers.length > 0)
       ? this.state.allUsers.map(user => (
         <li key={user.id}>
@@ -270,6 +297,12 @@ export default class UserProfile extends Component {
               <Input id="edit-other-username" type="text" placeholder={this.state.selectedUser.username} s={12} validate />
               <Input id="edit-other-password" type="password" placeholder="Password" s={12} validate />
               <Input id="edit-other-confirm-password" type="password" placeholder="Confirm password" s={12} validate />
+              <Row>
+                <Input s={12} id="edit-other-role" type="select" defaultValue={0}>
+                  <option value={0}>Select Role</option>
+                  { userRoles }
+                </Input>
+              </Row>
             </div>
           </li>
           { (this.state.successMsg.length > 0)

@@ -205,9 +205,9 @@ describe('User', () => {
   it('should be able to delete a user', (done) => {
     request.delete(`/api/users/${createdRegularUser.id}`)
         .set('authorization', regularToken)
-        .expect(204)
+        .expect(200)
         .then((response) => {
-          expect(response.ok).to.be.true;
+          expect(response.body.message).to.equal('User successfully deleted');
           done();
         });
   });

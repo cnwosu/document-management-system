@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import Header from '../components/header.jsx';
 import Footer from '../components/footer.jsx';
 import Login from '../components/login.jsx';
 import HomePage from '../components/home.jsx';
 import rootReducer from '../reducers';
+
 
 class AppComponent extends Component {
   constructor(props) {
@@ -13,10 +15,13 @@ class AppComponent extends Component {
     this.state = { isLoggedIn };
   }
   componentWillMount() {
-
+    browserHistory.push('/home');
     // Before component mount, check local storage for token and update state
     // @TODO: verify token integrity to ensure it is not tampered with
     const loginState = !!localStorage.getItem('token'); // returns true if token and false otherwise
+    if (!loginState) {
+      browserHistory.push('/login');
+    }
     this.setState({
       isLoggedIn: loginState
     });

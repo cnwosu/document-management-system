@@ -61,10 +61,10 @@ class documentController {
  */
   static getDocuments(req, res) {
     let queryParams = {};
-    if (req.query.limit && req.query.offset) {
+    if (req.query.limit) {
       queryParams = {
         limit: req.query.limit,
-        offset: req.query.offset
+        offset: (req.query.offset) ? req.query.offset : 0
       };
     }
     if (req.token.roleId === 1) {
