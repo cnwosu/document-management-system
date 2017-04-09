@@ -35,10 +35,10 @@ class Header extends Component {
   }
   render() {
     const loggedIn = localStorage.getItem('token');
-    const loginLogoutButton = (loggedIn) 
-      ? <a onClick={this.logout}>Logout</a>
-      : <a onClick={this.signup}>Signup</a>;
-      
+    const loginLogoutButton = (loggedIn)
+      ? <a id="logout-button" onClick={this.logout}>Logout</a>
+      : (this.state.button !== 'Signup') ? <a onClick={this.signup}>Signup</a> : null;
+
     let dynamicNav = null;
     if (loggedIn) {
       dynamicNav = (
@@ -53,13 +53,6 @@ class Header extends Component {
         }
           <li>
             {loginLogoutButton}
-          </li>
-        </ul>);
-    } else {
-      dynamicNav = (
-        <ul id="nav-mobile" className="right hide-on-med-and-down">
-          <li>
-            <Link className="" to="/login">Signup</Link>
           </li>
         </ul>);
     }

@@ -16,7 +16,7 @@ after_script:
   - cat ./coverage/lcov.info | ./node_modules/.bin/coveralls.js
 
 after_success:
-  - npm run coveralls
+  - npm run coverage
 
 services:
   - postgresql

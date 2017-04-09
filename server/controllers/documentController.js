@@ -3,8 +3,20 @@ import db from '../models/index';
 
 const Document = db.Document;
 
-
+/**
+ * documentController class
+ * @class documentController
+ */
 class documentController {
+
+  /**
+ * create a new document, and checks that
+ * the document does not already exist
+ * @method newDocument
+ * @param {object} req
+ * @param {object} res
+ * @return {object} HTTP response
+ */
   static newDocument(req, res) {
     const document = {};
     if (!req.body.title || !req.body.userId || !req.body.content) {
@@ -39,6 +51,14 @@ class documentController {
     });
   }
 
+ /**
+ * gets all documents, when requested for by the admin.
+ * And sets limit and offset for didplaying document.
+ * @method getDocuments
+ * @param {object} req
+ * @param {object} res
+ * @return {object} HTTP response
+ */
   static getDocuments(req, res) {
     let queryParams = {};
     if (req.query.limit && req.query.offset) {
@@ -76,6 +96,15 @@ class documentController {
     }
   }
 
+/**
+ * finds all users documents, when requested for by the admin.
+ * Or when requested for by the document owner or when document access is set to public,
+ * or when user has the same roleId as the owner of the document.
+ * @method findDocument
+ * @param {object} req
+ * @param {object} res
+ * @return {object} HTTP response
+ */
   static findDocument(req, res) {
     Document.findOne({ where: { id: req.params.id } }).then((document) => {
       if (document) {
@@ -94,6 +123,14 @@ class documentController {
     });
   }
 
+/**
+ * update users documents, when requested for by the admin.
+ * Or when requested for by the document owner.
+ * @method updateDocument
+ * @param {object} req
+ * @param {object} res
+ * @return {object} HTTP response
+ */
   static updateDocument(req, res) {
     Document.findOne({ where: { id: req.params.id } }).then((document) => {
       if (req.token.roleId !== 1 && req.token.userId !== document.userId) {
@@ -114,8 +151,19 @@ class documentController {
     });
   }
 
+/**
+ * Delete users documents, if it exists,
+ * when requested for by the admin or the owner.
+ * @method deleteDocument
+ * @param {object} req
+ * @param {object} res
+ * @return {object} HTTP response
+ */
   static deleteDocument(req, res) {
     Document.findOne({ where: { id: req.params.id } }).then((document) => {
+      if (!document) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
       if (req.token.roleId !== 1 && req.token.userId !== document.userId) {
         return res.status(401).send({ message: 'User Unauthorized' });
       }
@@ -129,12 +177,18 @@ class documentController {
     });
   }
 
+/**
+ * Search users documents based on title and ownerRoleId
+ * @method searchDocument
+ * @param {object} req
+ * @param {object} res
+ * @return {object} HTTP response
+ */
   static searchDocument(req, res) {
-    if (!req.query.title && !req.query.access && !req.query.ownerRoleId) {
+    if (!req.query.title && !req.query.ownerRoleId) {
       return res.status(400).json({ error: 'Provide a valid query' });
     }
     const searchTitle = (req.query.title) ? req.query.title : null;
-    // const searchAccess = (req.query.access) ? req.query.access : 'public';
     const searchRoleId = (req.query.ownerRoleId) ? req.query.ownerRoleId : 0;
     const limit = (req.query.limit) ? req.query.limit : 10;
     const query = {
@@ -143,15 +197,11 @@ class documentController {
           title: {
             $like: `%${searchTitle}%`
           },
-          ownerRoleId: searchRoleId,
-       //    access: searchAccess
+          ownerRoleId: searchRoleId
         }
       },
       limit
     };
-    if (req.token.roleId !== 1) {
-      query.where.userId = req.token.userId;
-    }
     Document.findAll(query).then((documents) => {
       if (!documents) {
         return res.status(404).send({ message: 'Document not found' });

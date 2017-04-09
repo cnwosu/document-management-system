@@ -163,7 +163,7 @@ class HomePage extends Component {
       },
       body: `title=${title}&content=${content}&access=${access}&userId=${userId}`
     };
-    const url = `${config.api}/documents`;
+    const url = `/api/documents`;
     fetch(url, options).then(data => data.json())
       .then((res) => {
         if (res && res.id) {
@@ -275,8 +275,21 @@ class HomePage extends Component {
     $('#modal1').modal();
     $('#modal2').modal();
     $('#modal3').modal();
-    $('.user_profile_tab').sideNav({ edge: 'right' });
-    $('.all_user_profile_tab').sideNav({ edge: 'right' });
+    $('.user_profile_tab').sideNav({
+      edge: 'right',
+      closeOnClick: true,
+      menuWidth: 450
+    });
+    $('.all_user_profile_tab').sideNav({
+      edge: 'right',
+      closeOnClick: true,
+      menuWidth: 450
+    });
+    $('.all_user_profile_edit_tab').sideNav({
+      edge: 'right',
+      closeOnClick: true,
+      menuWidth: 450
+    });
 
     const textareaStyle = {
       position: 'relative',
@@ -296,9 +309,14 @@ class HomePage extends Component {
 
     const document = this.displayDocuments(this.state.paginated || this.state.allDocuments);
     return (
-      <div className="row">
+      <div id="all-documents" className="row">
 
-        <DocumentDashboard searchDocument={this.searchDocument} loadTitles={this.loadTitles} getDocuments={this.getDocuments} allTitles={this.state.allTitles} getUserDocuments={this.getUserDocuments} />
+        <DocumentDashboard
+          searchDocument={this.searchDocument}
+          loadTitles={this.loadTitles}
+          getDocuments={this.getDocuments}
+          allTitles={this.state.allTitles}
+          getUserDocuments={this.getUserDocuments} />
         <hr />
 
         {/* New Document Modal  */}
@@ -315,7 +333,10 @@ class HomePage extends Component {
           </Collapsible>
         </div>
 
-        <Pagination items={this.state.documentsNumber} onSelect={this.paginate} maxButtons={this.state.documentsNumber} />
+        <Pagination
+          items={this.state.documentsNumber}
+          onSelect={this.paginate}
+          maxButtons={this.state.documentsNumber} />
       </div>
     );
   }

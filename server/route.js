@@ -1,7 +1,7 @@
-import documentController from './controller/documentController';
-import usersController from './controller/usersController';
-import Authorization from './controller/authorization';
-import roleController from './controller/roleController';
+import documentController from './controllers/documentController';
+import usersController from './controllers/usersController';
+import Authorization from './middleware/authorization';
+import roleController from './controllers/roleController';
 
 const express = require('express');
 

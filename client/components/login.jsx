@@ -45,7 +45,7 @@ class Login extends Component {
     if (password.trim().length < 1) {
       errors.push('Password is required');
     }
-    const url = `${config.api}/users/login`;
+    const url = `/api/users/login`;
     const options = {
       method: 'POST',
       headers: {
@@ -96,7 +96,7 @@ class Login extends Component {
     // specify default roleId of 2 for all users by default
     const roleId = 2;
 
-    const url = `${config.api}/users`;
+    const url = `/api/users`;
     let query = `email=${email}&password=${password}&username=${username}`;
     query += `&fullname=${fullname}&password_confirmation=${passwordConfirmation}&roleId=${roleId}`;
     const options = {
@@ -143,11 +143,12 @@ class Login extends Component {
               <Input id="user-email" type="email" label="Email" s={12} validate />
               <Input id="user-password" type="password" label="password" s={12} />
             </Row>
-  
           <Row>
             <Col s={6}>
-            <Button id="login-button" className="login-button" waves="light" onClick={this.validateUser}>Signin</Button>
-              <Link to="/signup" className="waves-effect waves-light btn signin-button">Signup</Link>
+            <Button id="login-button" className="login-button" waves="light" onClick={this.validateUser}>Login</Button>
+              <br /><br /><br />
+              Not registered? &nbsp; &nbsp;
+            <Link to="/Signup">Signup</Link>
             </Col>
           </Row>
         </div>

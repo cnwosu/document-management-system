@@ -46,7 +46,7 @@ class Signup extends Component {
     // specify default roleId of 2 for all users by default
     const roleId = 2;
 
-    const url = `${config.api}/users`;
+    const url = `/api/users`;
     let query = `email=${email}&password=${password}&username=${username}`;
     query += `&fullname=${fullname}&password_confirmation=${passwordConfirmation}&roleId=${roleId}`;
     const options = {
@@ -71,7 +71,7 @@ class Signup extends Component {
         this.setState({
           isLoggedIn: true
         });
-        // window.location.href = 'http://localhost:3000/home';
+        browserHistory.push('/home');
       } else {
         // Login failed handle action
         this.setState({
@@ -82,7 +82,6 @@ class Signup extends Component {
     .catch((error) => {
       console.log('err:', error);
     });
-    this.props.updateUser(this.state.isLoggedIn, 'SIGNUP_ACTION');
   }
   render() {
     return (
@@ -98,8 +97,13 @@ class Signup extends Component {
             </Row>
 
             <Row>
-                <Button waves="light" className="waves-effect waves-light btn signin-button" id="signup_button" onClick={this.setSignup}>Register</Button>
-                <Link to="/login" className="waves-effect waves-light btn signin-button">Signin</Link>
+                <Button waves="light"
+                  className="waves-effect waves-light btn signin-button"
+                  id="signup_button" 
+                  onClick={this.registerUser}>Register</Button>
+                  <br /><br /><br />
+                  Already registered? &nbsp; &nbsp;
+                <Link to="/login">Login</Link>
             </Row>
         </div>
       </div>

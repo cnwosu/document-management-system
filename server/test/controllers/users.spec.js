@@ -211,4 +211,13 @@ describe('User', () => {
           done();
         });
   });
+
+  it('should logout a user', (done) => {
+    request.post('/api/users/logout')
+        .expect(200)
+        .then((response) => {
+          expect(response.body.message).to.equal('Logout successfull');
+          done();
+        });
+  });
 });

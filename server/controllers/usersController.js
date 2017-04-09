@@ -4,8 +4,18 @@ import db from '../models/index';
 
 const User = db.User;
 
+/**
+ * usersController class
+ * @class usersController
+ */
 class usersController {
-
+  /**
+   * login a user
+   * @method login
+   * @param {object} req
+   * @param {object} res
+   * @return {object} HTTP response
+   */
   static login(req, res) {
     User.findOne({ where: { email: req.body.email } }).then((user) => {
       if (user && bcrypt.compareSync(req.body.password, user.password_digest)) {
@@ -19,10 +29,24 @@ class usersController {
     });
   }
 
+/**
+ * logout a user
+ * @method logout
+ * @param {object} req
+ * @param {object} res
+ * @return {object} HTTP response
+ */
   static logout(req, res) {
-    return res.status(201).json({ message: "i'm going!" });
+    return res.status(200).json({ message: 'Logout successfull' });
   }
 
+  /**
+   * create a new user
+   * @method newUser
+   * @param {object} req
+   * @param {object} res
+   * @return {object} HTTP response
+   */
   static newUser(req, res) {
     if (!req.body.fullname || !req.body.username || !req.body.password
     || !req.body.email || !req.body.roleId) {
@@ -56,6 +80,13 @@ class usersController {
     });
   }
 
+  /**
+   * Get users
+   * @method getUsers
+   * @param {object} req
+   * @param {object} res
+   * @return {object} HTTP response
+   */
   static getUsers(req, res) {
     let queryParams = {
       limit: 10,
@@ -74,6 +105,13 @@ class usersController {
     });
   }
 
+  /**
+   * Find users
+   * @method findUser
+   * @param {object} req
+   * @param {object} res
+   * @return {object} HTTP response
+   */
   static findUser(req, res) {
     User.findOne({ where: { id: req.params.id } }).then((user) => {
       if (user && (user.id === req.token.userId || req.token.roleId === 1)) {
@@ -86,10 +124,18 @@ class usersController {
     });
   }
 
+  /**
+   * Update a user
+   * @method updateUser
+   * @param {object} req
+   * @param {object} res
+   * @return {object} HTTP response
+   */
   static updateUser(req, res) {
     User.findOne({ where: { id: req.params.id } }).then((user) => {
       const password = bcrypt.hashSync(req.body.password);
       if (user.email === req.token.email || req.token.roleId === 1) {
+        user.email = req.body.email;
         user.fullname = req.body.fullname;
         user.username = req.body.username;
         user.password = req.body.password;
@@ -108,6 +154,13 @@ class usersController {
     });
   }
 
+  /**
+   * Search a user
+   * @method searchUser
+   * @param {object} req
+   * @param {object} res
+   * @return {object} HTTP response
+   */
   static searchUser(req, res) {
     if (req.query.q) {
       User.findOne({
@@ -126,6 +179,13 @@ class usersController {
     }
   }
 
+  /**
+   * Search users documents
+   * @method userDocuments
+   * @param {object} req
+   * @param {object} res
+   * @return {object} HTTP response
+   */
   static userDocuments(req, res) {
     User.findOne({ where: { id: req.params.id } }).then((user) => {
       if (user) {
@@ -138,6 +198,13 @@ class usersController {
     });
   }
 
+  /**
+   * Delete a user
+   * @method deleteUser
+   * @param {object} req
+   * @param {object} res
+   * @return {object} HTTP response
+   */
   static deleteUser(req, res) {
     User.findOne({ where: { id: req.params.id } }).then((user) => {
       if (user.email === req.token.email || req.token.roleId === 1) {
