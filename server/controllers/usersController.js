@@ -141,6 +141,9 @@ class usersController {
         user.password = req.body.password;
         user.password_confirmation = req.body.password_confirmation;
         user.password_digest = password;
+        user.roleId = (req.body.roleId)
+          ? req.body.roleId
+          : req.token.roleId;
         user.save().then((userData) => {
           const tokenData = { userId: userData.id, email: userData.email, roleId: userData.roleId };
           const token = jsonwebtoken.sign(tokenData, process.env.SECRET);
@@ -212,7 +215,7 @@ class usersController {
           if (err) {
             res.status(500).json({ message: 'Could not delete user' });
           } else {
-            res.status(204).json({ message: 'User successfully deleted' });
+            res.status(200).json({ message: 'User successfully deleted' });
           }
         });
       } else {

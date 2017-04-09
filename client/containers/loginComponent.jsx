@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import Header from '../components/header.jsx';
 import Footer from '../components/footer.jsx';
 import Login from '../components/login.jsx';
@@ -13,7 +14,7 @@ class LoginComponent extends Component {
     this.state = { isLoggedIn };
   }
   componentWillMount() {
-
+    browserHistory.push('/login');
     // Before component mount, check local storage for token and update state
     // @TODO: verify token integrity to ensure it is not tampered with
     const loginState = !!localStorage.getItem('token'); // returns true if token and false otherwise

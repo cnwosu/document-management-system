@@ -6,7 +6,6 @@ import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import { Router, Route, browserHistory, hashHistory } from 'react-router';
 import AppComponent from './containers/appComponent.jsx';
-import HomePage from './components/home.jsx';
 import LoginComponent from './containers/loginComponent.jsx';
 import SignupComponent from './containers/signupComponent.jsx';
 import LandingPage from './containers/landingPage.jsx';
@@ -40,5 +39,6 @@ ReactDOM.render(
       <Route path="/home" component={AppComponent} />
       <Route path="/login" component={LoginComponent} />
       <Route path="/signup" component={SignupComponent} />
+      <Route path="*" component={AppComponent} />
     </Router>
   </Provider>, document.getElementById('app'));
