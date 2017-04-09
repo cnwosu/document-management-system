@@ -114,7 +114,7 @@ class seedData {
         title: faker.lorem.word(),
         access: 'private',
         content: faker.lorem.sentences(),
-        ownerId: 1,
+        userId: 1,
         ownerRoleId: 1
       },
       {

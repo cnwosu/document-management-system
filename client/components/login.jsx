@@ -145,8 +145,10 @@ class Login extends Component {
             </Row>
           <Row>
             <Col s={6}>
-            <Button id="login-button" className="login-button" waves="light" onClick={this.validateUser}>Signin</Button>
-              <Link to="/signup" className="waves-effect waves-light btn signin-button">Signup</Link>
+            <Button id="login-button" className="login-button" waves="light" onClick={this.validateUser}>Login</Button>
+              <br /><br /><br />
+              Not registered? &nbsp; &nbsp;
+            <Link to="/Signup">Signup</Link>
             </Col>
           </Row>
         </div>

@@ -101,7 +101,9 @@ class Signup extends Component {
                   className="waves-effect waves-light btn signin-button"
                   id="signup_button" 
                   onClick={this.registerUser}>Register</Button>
-                <Link to="/login" className="waves-effect waves-light btn signin-button">Signin</Link>
+                  <br /><br /><br />
+                  Already registered? &nbsp; &nbsp;
+                <Link to="/login">Login</Link>
             </Row>
         </div>
       </div>

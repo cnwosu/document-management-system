@@ -324,6 +324,16 @@ describe('Document', () => {
       });
   });
 
+  it('should not be able to delete a document that does not exist', (done) => {
+    request.delete('/api/documents/999998888')
+      .set('authorization', adminToken)
+      .expect(404)
+      .then((res) => {
+        expect(res.body.message).to.equal('Document not found');
+        done();
+      });
+  });
+
   it('should return 404 on non-existent document request', (done) => {
     request.get('/api/documents/9089808')
       .set('authorization', adminToken)

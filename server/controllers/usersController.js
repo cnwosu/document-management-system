@@ -37,7 +37,7 @@ class usersController {
  * @return {object} HTTP response
  */
   static logout(req, res) {
-    return res.status(201).json({ message: 'Logout successfull' });
+    return res.status(200).json({ message: 'Logout successfull' });
   }
 
   /**

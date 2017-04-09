@@ -17,26 +17,11 @@ export default class UserProfile extends Component {
     this.updateUser = this.updateUser.bind(this);
     this.editUser = this.editUser.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
+    this.getAllUsers = this.getAllUsers.bind(this);
   }
   componentWillMount() {
-    // Get all users if current user is an admin
-    if (this.props.userData.roleId === 1) {
-      const url = '/api/users';
-      const token = localStorage.getItem('token');
-      const options = {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-          Authorization: token
-        }
-      };
-      fetch(url, options).then(data => data.json())
-      .then((res) => {
-        this.setState({
-          allUsers: res.users
-        });
-      });
-    }
+    // Load users for admin
+    this.getAllUsers();
   }
   componentDidMount() {
     if (this.props.userData) {
@@ -53,6 +38,29 @@ export default class UserProfile extends Component {
       .then((res) => {
         this.setState({
           user: res.user
+        });
+      });
+    }
+  }
+  getAllUsers() {
+    this.setState({
+      clickAction: null
+    });
+    // Get all users if current user is an admin
+    if (this.props.userData.roleId === 1) {
+      const url = '/api/users';
+      const token = localStorage.getItem('token');
+      const options = {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          Authorization: token
+        }
+      };
+      fetch(url, options).then(data => data.json())
+      .then((res) => {
+        this.setState({
+          allUsers: res.users
         });
       });
     }
@@ -92,7 +100,7 @@ export default class UserProfile extends Component {
 
     fetch(url, options).then(data => data.json())
       .then((res) => {
-        if(owner) {
+        if (owner) {
           const userData = {
             fullname: res.userData.fullname,
             roleId: res.userData.roleId,
@@ -135,6 +143,7 @@ export default class UserProfile extends Component {
         }
       };
       fetch(url, options).then((data) => {
+        this.getAllUsers();
         console.log(data);
       });
     } else {
@@ -241,7 +250,11 @@ export default class UserProfile extends Component {
               <br />
               <li><a className="waves-effect right" onClick={() => { this.deleteUser(); }}>
                 <i className="small material-icons">delete</i> Yes</a></li>
-              <li><a className="waves-effect left" onClick={() => { this.deleteUser('cancel'); }}> <i className="small material-icons">cancel</i> No</a></li>
+              <li><a
+                className="waves-effect left"
+                onClick={() => { this.deleteUser('cancel'); }}
+              >
+                <i className="small material-icons">cancel</i> No</a></li>
             </div>
             : null
             }

@@ -4,7 +4,6 @@ import Header from '../components/header.jsx';
 import Footer from '../components/footer.jsx';
 import Login from '../components/login.jsx';
 import HomePage from '../components/home.jsx';
-// import actionTypes from '../actions/actionTypes';
 import rootReducer from '../reducers';
 
 class AppComponent extends Component {

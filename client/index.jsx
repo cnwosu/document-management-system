@@ -9,6 +9,8 @@ import AppComponent from './containers/appComponent.jsx';
 import HomePage from './components/home.jsx';
 import LoginComponent from './containers/loginComponent.jsx';
 import SignupComponent from './containers/signupComponent.jsx';
+import LandingPage from './containers/landingPage.jsx';
+
 import rootReducer from './reducers';
 
 const loggerMiddleware = createLogger();
@@ -34,8 +36,7 @@ const unsubscribe = store.subscribe(() => {
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      {/*<Route path="/" component={LoginComponent} />*/}
-      <Route path="/" component={AppComponent} />
+      <Route path="/" component={LandingPage} />
       <Route path="/home" component={AppComponent} />
       <Route path="/login" component={LoginComponent} />
       <Route path="/signup" component={SignupComponent} />

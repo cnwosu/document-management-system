@@ -27,7 +27,10 @@ export default class DocumentDashboard extends Component {
           </div>
           <div className="col s2">
             <div id="my-documents" className="add-document">
-              <a className="text-center" id="my-document" href="" onClick={this.props.getUserDocuments}>
+              <a className="text-center"
+                id="my-document"
+                href=""
+                onClick={this.props.getUserDocuments}>
                 <i className="medium material-icons">list</i>
                 <br />
                 My document
@@ -35,8 +38,11 @@ export default class DocumentDashboard extends Component {
             </div>
           </div>
           <div className="col s2">
-            <div id="documents" className="add-document">
-              <a className="text-center" id="all-documents" style={allDocumentStyle} onClick={this.props.getDocuments}>
+            <div id="documentsAdd" className="add-document">
+              <a className="text-center"
+                id="all-documents"
+                style={allDocumentStyle} 
+                onClick={this.props.getDocuments}>
                 <i className="medium material-icons">library_books</i>
                 <br />
                 All documents
@@ -48,7 +54,12 @@ export default class DocumentDashboard extends Component {
 
             <div className="right search-filter">
               <div className="col s12" data-reactid="17">
-                <input list="documents" id="searchInput" onChange={this.props.loadTitles} placeholder="search" style={searchStyle} data-reactid="18" />
+                <input list="documents"
+                  id="searchInput"
+                  onChange={this.props.loadTitles}
+                  placeholder="search"
+                  style={searchStyle}
+                  data-reactid="18" />
                 <datalist id="documents">
                   { titleResult }
                 </datalist>

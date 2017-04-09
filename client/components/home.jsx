@@ -311,7 +311,12 @@ class HomePage extends Component {
     return (
       <div id="all-documents" className="row">
 
-        <DocumentDashboard searchDocument={this.searchDocument} loadTitles={this.loadTitles} getDocuments={this.getDocuments} allTitles={this.state.allTitles} getUserDocuments={this.getUserDocuments} />
+        <DocumentDashboard
+          searchDocument={this.searchDocument}
+          loadTitles={this.loadTitles}
+          getDocuments={this.getDocuments}
+          allTitles={this.state.allTitles}
+          getUserDocuments={this.getUserDocuments} />
         <hr />
 
         {/* New Document Modal  */}
@@ -328,7 +333,10 @@ class HomePage extends Component {
           </Collapsible>
         </div>
 
-        <Pagination items={this.state.documentsNumber} onSelect={this.paginate} maxButtons={this.state.documentsNumber} />
+        <Pagination
+          items={this.state.documentsNumber}
+          onSelect={this.paginate}
+          maxButtons={this.state.documentsNumber} />
       </div>
     );
   }
