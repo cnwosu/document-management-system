@@ -7,7 +7,7 @@ require('dotenv').config();
  */
 class AuthorizationController {
   /**
-   * getToken method
+   * getToken method verifies that a token was specified in the request header
    * @param {request} request request object
    * @param {response} response response
    * @return {object} http response

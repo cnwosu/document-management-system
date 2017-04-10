@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -30,6 +30,9 @@ module.exports = {
         test: /\.scss$/,
         loader: 'style-loader!css-loader'
       },
+      { test: /\.(jpg|png|svg|jpeg)$/,
+        loader: 'file-loader?name=[document-management2].[jpg]'
+      }
     ]
   },
   plugins: [
@@ -37,6 +40,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: 'body',
       template: path.join(__dirname, './client/index.html')
-    })
+    }),
+    new ExtractTextPlugin('main.css')
   ],
 };

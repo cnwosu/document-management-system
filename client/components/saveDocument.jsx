@@ -25,8 +25,7 @@ export default class SaveDocumentPage extends Component {
           <h4>New Document</h4>
           <Row>
             <Input id="document_title" placeholder="Enter document title. . ." style={titleStyle} s={6} validate />
-            <Input id="document_access" s={6} type="select" defaultValue="default">
-              <option value="defualt">Select Document Access</option>
+            <Input id="document_access" s={6} type="select" label="Select Document Access" defaultValue="public">
               <option value="public">Public</option>
               <option value="private">Private</option>
               <option value="role">Role</option>
@@ -35,7 +34,7 @@ export default class SaveDocumentPage extends Component {
           <textarea id="document_content" placeholder="type document content here . . ." style={textareaStyle} />
         </div>
         <div className="modal-footer">
-          <a onClick={this.props.createDoc} className="modal-action modal-close waves-effect waves-green btn-flat ">SAVE</a>
+          <a id="saveNewDocumentModal" onClick={this.props.createDoc} className="modal-action modal-close waves-effect waves-green btn-flat ">SAVE</a>
           <a href="" className="modal-action modal-close waves-effect waves-green btn-flat ">SAVE DRAFT</a>
           <a onClick={this.props.clearDoc} className="modal-action modal-close waves-effect waves-green btn-flat ">CANCEL</a>
         </div>

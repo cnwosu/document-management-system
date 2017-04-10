@@ -19,10 +19,9 @@ class usersController {
   static login(req, res) {
     User.findOne({ where: { email: req.body.email } }).then((user) => {
       if (user && bcrypt.compareSync(req.body.password, user.password_digest)) {
-        const tokenData = { userId: user.id, email: user.email, roleId: user.roleId };
+        const tokenData = { fullname: user.fullname, userId: user.id, email: user.email, roleId: user.roleId };
         const token = jsonwebtoken.sign(tokenData, process.env.SECRET);
-        const userDetails = { fullname: user.fullname, roleId: user.roleId, userId: user.id };
-        res.status(200).json({ message: 'success', jwt: token, userData: userDetails });
+        res.status(200).json({ message: 'success', jwt: token, userData: tokenData });
       } else {
         res.status(401).json({ message: 'Login failed' });
       }

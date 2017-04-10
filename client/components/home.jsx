@@ -186,7 +186,10 @@ class HomePage extends Component {
 
   displayDocuments(documents) {
     return documents.map(doc =>
-        (<CollapsibleItem key={doc.id} header={`${doc.title} - ${moment(doc.createdAt).format('LL')}`} icon="library_books">
+        (<CollapsibleItem
+          key={doc.id} header={`${doc.title} - ${moment(doc.createdAt).format('LL')}`}
+          icon="library_books"
+          className="listDocuments">
           { doc.content }
           {((doc.userId === this.state.user.userId) || (this.state.user.userId === 1))
             ? <ul className="pagination">
@@ -310,13 +313,14 @@ class HomePage extends Component {
     const document = this.displayDocuments(this.state.paginated || this.state.allDocuments);
     return (
       <div id="all-documents" className="row">
-
+        <div className="icons-container white">
         <DocumentDashboard
           searchDocument={this.searchDocument}
           loadTitles={this.loadTitles}
           getDocuments={this.getDocuments}
           allTitles={this.state.allTitles}
           getUserDocuments={this.getUserDocuments} />
+        </div>
         <hr />
 
         {/* New Document Modal  */}

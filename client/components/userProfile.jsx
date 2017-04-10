@@ -205,8 +205,12 @@ export default class UserProfile extends Component {
               >
                 {user.fullname}
               </span>
-              <i style={iconStyle} onClick={() => { this.editUser(user, 'delete'); }} className="small material-icons right">delete</i>
-              <i style={iconStyle} onClick={() => { this.editUser(user, 'edit'); }} className="small material-icons right">mode_edit</i>
+              <i style={iconStyle}
+                onClick={() => { this.editUser(user, 'delete'); }}
+                className="small material-icons right">delete</i>
+              <i style={iconStyle}
+                onClick={() => { this.editUser(user, 'edit'); }}
+                className="small material-icons right">mode_edit</i>
             </div>
           </div>
         </li>
@@ -214,7 +218,7 @@ export default class UserProfile extends Component {
     return (
       <div>
         {/* Display user profile nav */}
-        <ul id="slide-out" className="side-nav left">
+        <ul id="slide-out" className="side-nav left black-text">
           <li>
             <div className="userView">
               <a><i className="large material-icons">perm_identity</i></a>
@@ -225,7 +229,7 @@ export default class UserProfile extends Component {
           </li>
           <li><div className="divider" /></li>
           {(this.state.user.roleId === 1)
-            ? <li><a className="all_user_profile_tab waves-effect" data-activates="slide-out-all-users">
+            ? <li id="all-users-tab"><a className="all_user_profile_tab waves-effect" data-activates="slide-out-all-users">
               <i className="small material-icons">supervisor_account</i>
                 View All Users</a>
             </li>
@@ -236,7 +240,7 @@ export default class UserProfile extends Component {
           <li><a className="waves-effect"><i className="small material-icons">reply</i>Back</a></li>
         </ul>
         {/* Display edit profile side nav */}
-        <ul id="slide-out-edit" className="side-nav left">
+        <ul id="slide-out-edit" className="side-nav left black-text">
           <li>
             <div className="userView">
               <a><i className="large material-icons">perm_identity</i></a>
@@ -258,7 +262,7 @@ export default class UserProfile extends Component {
           <li><a className="waves-effect" onClick={this.props.logout}> <i className="material-icons">power_settings_new</i> Logout</a></li>
         </ul>
         {/* List all users */}
-        <ul id="slide-out-all-users" className="side-nav left">
+        <ul id="slide-out-all-users" className="side-nav left black-text">
           <li>
             <div className="userView">
               <a><i className="large material-icons">supervisor_account</i></a>
@@ -287,7 +291,7 @@ export default class UserProfile extends Component {
             }
         </ul>
         {/* Display edit user profile side nav */}
-        <ul id="slide-out-edit-user" className="side-nav left">
+        <ul id="slide-out-edit-user" className="side-nav left black-text">
           <li>
             <div className="userView">
               <a><i className="large material-icons">perm_identity</i></a>
