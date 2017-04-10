@@ -19,7 +19,7 @@ export default class DocumentDashboard extends Component {
           <div className="col s2">
             <div id="add-documents" className="add-document">
               <a className="text-center" id="add-document" href="#modal1">
-                <i className="medium material-icons">library_add</i>
+                <i className="medium material-icons white-text">library_add</i>
                 <br />
                 Add document
             </a>
@@ -31,7 +31,7 @@ export default class DocumentDashboard extends Component {
                 id="my-document"
                 href=""
                 onClick={this.props.getUserDocuments}>
-                <i className="medium material-icons">list</i>
+                <i className="medium material-icons white-text">list</i>
                 <br />
                 My document
             </a>
@@ -43,7 +43,7 @@ export default class DocumentDashboard extends Component {
                 id="all-documents"
                 style={allDocumentStyle} 
                 onClick={this.props.getDocuments}>
-                <i className="medium material-icons">library_books</i>
+                <i className="medium material-icons white-text">library_books</i>
                 <br />
                 All documents
             </a>
@@ -54,7 +54,8 @@ export default class DocumentDashboard extends Component {
 
             <div className="right search-filter">
               <div className="col s12" data-reactid="17">
-                <input list="documents"
+                <input
+                  list="documents"
                   id="searchInput"
                   onChange={this.props.loadTitles}
                   placeholder="search"

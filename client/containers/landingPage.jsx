@@ -24,19 +24,20 @@ class LandingPage extends Component {
     return (
       <div>
         <Header />
-        <div className="row col s12">
-          <div className="col s12 m6">
-            <div className="card blue-grey darken-1">
-              <div className="card-content white-text">
-                <span className="card-title">Document Management System</span>
-                <h5> A full stack document management system,
-                  complete with roles and privileges. Each document defines access rights;
-                  the document defines which roles can access it.</h5>
-              </div>
-              <span className="card-title">Get Started</span>
-              <div className="card-action">
-                <Link to="/login">Login</Link>
-                <Link to="/signup">Signup</Link>
+        <div className="centerDiv">
+          <div className="row col s12">
+            <div className="col s6 m6">
+              <div className="card">
+                <div className="card-content">
+                  <span className="card-title font-effect-3d-float teal"><h4>Document Management System</h4></span>
+                  <h5> A complete document management system,
+                   with roles and privileges. Each document defines access rights;
+                    the document defines which roles can access it.</h5>
+                </div>
+                <div className="card-action">
+                  <Link className="font-effect-3d-float" id="landingLoginButton" to="/login">Login</Link>
+                  <Link className="font-effect-3d-float" id="landingSignupButton" to="/signup">Signup</Link>
+                </div>
               </div>
             </div>
           </div>

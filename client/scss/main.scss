@@ -1,3 +1,25 @@
+
+body, html {
+    background: url('../images/document-management2.jpg');
+    background-size:cover;
+    padding:0px !important;
+    color: white
+}
+
+.body {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: #000;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+}
+
+#brand-logo {
+    font: 'Caudex', serif;
+    color: white;
+}
 .page-footer{
     position: absolute;
     bottom: 0;
@@ -14,7 +36,7 @@
 
 .login-title {
     font-size:25px;
-    color: #777;
+    color: #FFF;
     margin-top: 130px !important;
     margin: 30px 50px;
     text-align: center;
@@ -57,4 +79,23 @@
 
 .collapsible-popout {
     margin-top: 50px !important;
+}
+
+.card-content white-text {
+    background-color: transparent;
+}
+
+.centerDiv {
+    position: 'absolute';
+    margin-left: 35%;
+    margin-top: 10%;
+    font-size:25px;
+    color: teal !important;
+    text-align: center;
+}
+
+#landingLoginButton, #landingSignupButton {
+    font: 'Caudex', serif;
+    color: teal !important;
+    text-align: center;
 }

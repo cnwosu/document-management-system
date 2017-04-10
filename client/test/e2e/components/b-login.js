@@ -3,13 +3,10 @@ describe('Login', () => {
     browser.get('/login');
   });
   afterEach(() => {
-    element(by.id('logout-button')).click();
+    element(by.id('nav-logout-button')).click();
   });
 
   it('should login a registered user with correct details', () => {
-    browser.executeScript('return localStorage.getItem("token");').then((tokenBefore) => {
-      expect(tokenBefore).to.equal(null);
-    });
     const homeUrl = 'http://localhost:3000/home';
     const email = 'admin@dms.com';
     const password = 'admin';

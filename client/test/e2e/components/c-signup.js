@@ -5,13 +5,10 @@ describe('Signup', () => {
     browser.get('/signup');
   });
   afterEach(() => {
-    element(by.id('logout-button')).click();
+    element(by.id('nav-logout-button')).click();
   });
 
   it('should signup a user with valid details', () => {
-    browser.executeScript('return localStorage.getItem("token");').then((tokenBefore) => {
-      expect(tokenBefore).to.equal(null);
-    });
     const homeUrl = 'http://localhost:3000/home';
     const email = faker.internet.email();
     const password = '123456';

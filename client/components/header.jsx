@@ -36,7 +36,7 @@ class Header extends Component {
   render() {
     const loggedIn = localStorage.getItem('token');
     const loginLogoutButton = (loggedIn)
-      ? <a id="logout-button" onClick={this.logout}>Logout</a>
+      ? <a id="nav-logout-button" onClick={this.logout}>Logout</a>
       : (this.state.button !== 'Signup') ? <a onClick={this.signup}>Signup</a> : null;
 
     let dynamicNav = null;
@@ -64,7 +64,7 @@ class Header extends Component {
         {profileSideBar}
         <nav className="d-header">
           <div className="nav-wrapper teal">
-            <a className="brand-logo site-title">MarkyDoc</a>
+            <Link className="brand-logo site-title font-effect-3d-float" id="brand-logo" to="/">MarkyDoc</Link>
             {dynamicNav}
           </div>
         </nav>

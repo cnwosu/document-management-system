@@ -10,5 +10,5 @@
       "**/*.spec.js",
       "client"
   ],
-  "include": ["server/controller/*.js"]
+  "include": ["server/controllers/*.js"]
 }
