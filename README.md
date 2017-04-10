@@ -57,4 +57,4 @@ The application was developed with NodeJs and Express is used for routing. The P
 
 ## Heroku App Link
 
-- [visit] (https://markydoc-management-system.herokuapp.com/login)
+- [visit] (https://markydoc-management-system.herokuapp.com)
